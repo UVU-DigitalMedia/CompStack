@@ -1,0 +1,35 @@
+{
+  "name": "compstack",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.13.2",
+    "cookie-parser": "~1.3.5",
+    "debug": "~2.2.0",
+    "express": "~4.13.1",
+    "jade": "~1.11.0",
+    "morgan": "~1.6.1",
+    "serve-favicon": "~2.3.0"
+  },
+  "description": "This is where we build the competency definition, mapping, and storage web app.",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UVU-DigitalMedia/CompStack.git"
+  },
+  "keywords": [
+    "Competency",
+    "Competence",
+    "Browser",
+    "Manager"
+  ],
+  "author": "Thor Anderson, Ryan Lifferth, Braydon Powell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UVU-DigitalMedia/CompStack/issues"
+  },
+  "homepage": "https://github.com/UVU-DigitalMedia/CompStack#readme"
+}
