@@ -1,0 +1,30 @@
+{
+  "name": "compstack",
+  "description": "This is where we build the competency definition, mapping, and storage web app.",
+  "main": "app.js",
+  "authors": [
+    "Thor Anderson",
+    "Ryan Lifferth",
+    "Braydon Powell"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Competency",
+    "Competence",
+    "Browser",
+    "Manager"
+  ],
+  "homepage": "https://github.com/UVU-DigitalMedia/CompStack",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
+    "polymer": "^1.5.0"
+  }
+}

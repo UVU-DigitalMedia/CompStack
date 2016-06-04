@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -12,6 +12,7 @@
     "ejs": "^2.4.2",
     "express": "^4.13.4",
     "morgan": "~1.6.1",
+    "nodemon": "^1.9.2",
     "serve-favicon": "~2.3.0"
   },
   "description": "This is where we build the competency definition, mapping, and storage web app.",

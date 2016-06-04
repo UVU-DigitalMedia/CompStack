@@ -1,0 +1,39 @@
+<link rel="import" href="/bower_components/firebase-element/firebase.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-document.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-auth.html">
+<dom-module id="app-addcompform">
+
+    <template>
+
+        <p>HI FOLKS I AM <strong>app-addcompform</strong></p>
+
+        <firebase-collection
+            location="https://sweltering-fire-2420.firebaseio.com/competencies"
+            data="{{competencies}}">
+        </firebase-collection>
+
+        <template is="dom-repeat" items="[[competencies]]" as="competency">
+
+            <h4>[[competency.__firebaseKey__]]</h4>
+
+            Title: <span>[[competency.title]]</span>m
+
+        </template>
+
+    </template>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        Polymer({
+        is: 'app-addcompform'
+
+        });
+
+    </script>
+
+</dom-module>
