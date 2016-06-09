@@ -1,0 +1,79 @@
+<link rel="import" href="/bower_components/firebase-element/firebase.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-document.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<dom-module id="app-database">
+
+    <template>
+
+        <firebase-auth
+            id="firebase_auth"
+            statusKnown="{{statusKnown}}"
+            user="{{user}}"
+            provider="github"
+            location="https://sweltering-fire-2420.firebaseio.com"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
+        <firebase-collection id="collection_competencies"
+            location="https://sweltering-fire-2420.firebaseio.com/competencies"
+            data="{{competencies}}">
+        </firebase-collection>
+
+        <template is="dom-repeat" items="[[competencies]]" as="competency">
+
+            <h4>[[competency.__firebaseKey__]]</h4>
+
+            Title: <span>[[competency.title]]</span>
+
+        </template>
+
+        <paper-button on-tap="login">Login</paper-button>
+
+        <template is="dom-if" if="{{user}}">{{user.github.username}}<paper-button on-click="logout">Logout</paper-button><paper-button on-click="addCompetency">Add to the database</paper-button></template>
+
+    </template>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'app-database',
+
+            addCompetency: function(){
+
+                this.$.firebase_auth.login({});
+                this.$.collection_competencies.add({assesments : {}, course: "Test Compentency, No Courses", creator: "dev-tester", modified: Date(), modules: {}, title: "Test Competency" } )
+
+            },
+
+            login: function(){
+
+                this.$.firebase_auth.login();
+
+            },
+
+            logout: function(){
+
+                this.$.firebase_auth.logout();
+
+            },
+
+            onLogin: function() {
+
+                alert('You logged in');
+                console.log(user);
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>

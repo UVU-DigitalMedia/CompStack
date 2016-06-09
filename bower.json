@@ -25,6 +25,9 @@
   ],
   "dependencies": {
     "firebase-element": "GoogleWebComponents/firebase-element#^1.0.12",
-    "polymer": "^1.5.0"
+    "polymer": "^1.5.0",
+    "bower": "*",
+    "install": "^1.0.4",
+    "paper-button": "PolymerElements/paper-button#^1.0.12"
   }
 }
