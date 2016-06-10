@@ -1,0 +1,85 @@
+<link rel="import" href="/bower_components/firebase-element/firebase.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-collection.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-document.html">
+<link rel="import" href="/bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-material/paper-material.html">
+<link rel="import" href="/bower_components/paper-card/paper-card.html">
+<link rel="import" href="/bower_components/paper-listbox/paper-listbox.html">
+<dom-module id="app-login">
+
+    <template>
+
+        <firebase-auth
+            id="firebase_auth"
+            statusKnown="{{statusKnown}}"
+            user="{{user}}"
+            provider="github"
+            location="https://sweltering-fire-2420.firebaseio.com"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
+        <paper-button on-tap="login" hidden?="{{user}}">Login</paper-button>
+
+        <template is="dom-if" if="{{user}}">
+            <span>{{user.github.username}}</span>
+            <paper-button on-click="logout">Logout</paper-button>
+            <paper-button on-click="addCompetency">Add to the database</paper-button>
+        </template>
+
+    </template>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'app-login',
+
+            properties: {
+
+                user: Object,
+
+            },
+
+            ready: function() {
+
+              this.showLogin = true;
+
+            },
+
+            addCompetency: function(){
+
+               document.querySelector('app-database').addCompetency();
+
+            },
+
+            login: function(){
+
+                this.$.firebase_auth.login();
+                this.showLogin = false;
+
+            },
+
+            logout: function(){
+
+                this.$.firebase_auth.logout();
+                this.showLogin = true;
+
+            },
+
+            onLogin: function() {
+
+                console.log(user);
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>

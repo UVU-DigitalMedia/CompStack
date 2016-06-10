@@ -8,3 +8,18 @@ a {
   color: #00B7FF;
 }
 
+paper-button {
+
+    padding: 5px;
+    margin: 5px;
+    color: black;
+    background-color: #fff;
+    display: inline-block;
+
+}
+
+app-login {
+
+    display: block;
+
+}

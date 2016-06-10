@@ -10,24 +10,6 @@
 
     <template>
 
-        <firebase-auth
-            id="firebase_auth"
-            statusKnown="{{statusKnown}}"
-            user="{{user}}"
-            provider="github"
-            location="https://sweltering-fire-2420.firebaseio.com"
-            on-login="onLogin"
-            on-error="onLoginError">
-        </firebase-auth>
-
-        <paper-button on-tap="login">Login</paper-button>
-
-        <template is="dom-if" if="{{user}}">
-            {{user.github.username}}
-            <paper-button on-click="logout">Logout</paper-button>
-            <paper-button on-click="addCompetency">Add to the database</paper-button>
-        </template>
-
         <firebase-collection id="collection_competencies"
             location="https://sweltering-fire-2420.firebaseio.com/competencies"
             data="{{competencies}}">
@@ -105,7 +87,6 @@
 
             addCompetency: function(){
 
-                this.$.firebase_auth.login({});
                 this.$.collection_competencies.add({assesments : {}, course: "Test Compentency, No Courses", creator: "dev-tester", modified: Date(), modules: {}, title: "Test Competency" } )
 
             },
