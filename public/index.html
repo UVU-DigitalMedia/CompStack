@@ -14943,7 +14943,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module><dom-module id="app-database" assetpath="components/">
+</dom-module>
+<dom-module id="app-database" assetpath="components/">
 
     <template>
 
@@ -14953,6 +14954,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <firebase-collection id="collection_courses" location="https://sweltering-fire-2420.firebaseio.com/courses" data="{{courses}}" order-by-child="department">
         </firebase-collection>
 
+<!--
         <paper-material>
 
             <template is="dom-repeat" items="[[competencies]]" as="competency">
@@ -14990,6 +14992,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-material>
 
     </template>
+-->
 
     <style>
 
@@ -15045,25 +15048,103 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module>
-<dom-module id="app-login" assetpath="components/">
+
+</template></dom-module><dom-module id="app-login" assetpath="components/">
 
     <template>
 
         <firebase-auth id="firebase_auth" statusknown="{{statusKnown}}" user="{{user}}" provider="github" location="https://sweltering-fire-2420.firebaseio.com" on-login="onLogin" on-error="onLoginError">
         </firebase-auth>
 
+        <div class="topBar">
+
+            <div class="topRight">
+
+                <div class="formToggle">
+                    <p>Register</p>
+                </div>
+
+                <div class="formToggle active">
+                    <p>Login</p>
+                </div>
+
+            </div>
+
+            <h1>Competency Browser</h1>
+
+            <p>A tool for viewing and editing competencies.</p>
+
+        </div>
+
+        <h2>Welcome <span class="darken">Back!</span></h2>
+
         <paper-button on-tap="login" hidden?="{{user}}">Login</paper-button>
 
+<!--
         <template is="dom-if" if="{{user}}">
             <span>{{user.github.username}}</span>
             <paper-button on-click="logout">Logout</paper-button>
             <paper-button on-click="addCompetency">Add to the database</paper-button>
         </template>
+-->
 
     </template>
 
     <style>
+
+        :host {
+            display: flex;
+            height: 560px;
+            width: 800px;
+            background-color: #f6f7fa;
+            color: #8492af;
+            margin: auto;
+            padding: 0;
+            vertical-align: middle;
+        }
+
+        h1, p{
+
+            margin: 0;
+            padding: 0;
+
+        }
+
+        h2 {
+
+            text-align: center;
+        }
+
+        .topBar {
+            margin: 0;
+            padding: 5px 0px 5px 20px;
+            background-color: #3c7d15;
+            color: #fff;
+            height: 50px;
+        }
+        .darken {
+            color: #385768;
+        }
+        .topRight {
+            float: right;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .formToggle {
+            display: table-cell;
+            width: 100px;
+            height: 50px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+
+        }
+        .active {
+            border-bottom: #385768 solid 5px;
+        }
 
     </style>
 
@@ -15115,7 +15196,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module><!--
+</dom-module>
+<!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
@@ -21282,6 +21364,7 @@ of a listbox item will also focus it.
 </div>
 
     <app-main></app-main>
+
 
 
 

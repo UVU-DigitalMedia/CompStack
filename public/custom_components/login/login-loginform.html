@@ -1,0 +1,95 @@
+<dom-module id="login-loginform">
+
+    <template>
+
+        <h2>Welcome <span class="darken">Back!</span></h2>
+
+        <div class="input-container">
+
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input label="Username"></paper-input><br/>
+
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input type="password" label="Password"></paper-input>
+
+        </div>
+
+        <paper-button class="login" on-tap="login">Login</paper-button>
+
+        <h2><span class="line"></span>or<span class="line"></span></h2>
+
+        <div class="btn-container">
+
+            <paper-button class="login google" on-tap="login"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
+
+            <paper-button class="login github" on-tap="login"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
+
+        </div>
+
+    </template>
+
+    <style>
+        .input-container{
+            width: 400px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .darken {
+            color: #385768;
+        }
+        iron-icon, paper-input{
+            display: inline-block;
+        }
+        paper-input{
+            width: 375px;
+        }
+        .login {
+            display: block;
+            text-align: center;
+            color: #fff;
+            background-color: #385768;
+            border-radius: 20px;
+            width: 250px;
+            margin: 24px auto 24px auto;
+        }
+
+        .line {
+            display: inline-block;
+            background-color: #8492af;
+            height: 1px;
+            width: 100px;
+            vertical-align: middle;
+        }
+        .btn-container{
+            display: block;
+            width: 600px;
+            margin: auto;
+        }
+        .google {
+            display: inline-block;
+            background-color: #da0000;
+            width: 250px;
+        }
+        .github {
+            display: inline-block;
+            background-color: #808080;
+            width: 250px;
+        }
+        .google, .github {
+            margin: 24px;
+        }
+        .btn-icon{
+            height: 20px;
+            vertical-align: middle;
+        }
+    </style>
+
+    <script>
+
+        Polymer({
+            is: 'login-loginform'
+        });
+
+    </script>
+
+</dom>

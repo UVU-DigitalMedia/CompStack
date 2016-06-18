@@ -31,6 +31,9 @@
     "paper-button": "PolymerElements/paper-button#^1.0.12",
     "paper-material": "PolymerElements/paper-material#^1.0.6",
     "paper-card": "PolymerElements/paper-card#^1.1.1",
-    "paper-listbox": "polymerelements/paper-listbox#^1.1.2"
+    "paper-listbox": "polymerelements/paper-listbox#^1.1.2",
+    "paper-input": "PolymerElements/paper-input#^1.1.11",
+    "iron-icons": "PolymerElements/iron-icons#^1.1.3",
+    "iron-icon": "PolymerElements/iron-icon#^1.0.8"
   }
 }

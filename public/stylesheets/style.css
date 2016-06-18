@@ -1,25 +1,23 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,700italic,500italic,400italic);
+
 body {
+  background-image: url('/images/bg.png');
+  background-repeat: no-repeat;
+  background-position: center;
   background-color: gray;
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+* {
+  font-family: 'Roboto';
+  font-weight: 300;
 }
 
-a {
-  color: #00B7FF;
+p {
+    font-size: 10pt;
 }
 
-paper-button {
+iron-icon {
 
-    padding: 5px;
-    margin: 5px;
-    color: black;
-    background-color: #fff;
-    display: inline-block;
-
-}
-
-app-login {
-
-    display: block;
-
+    fill: #3c7d15 !important;
 }

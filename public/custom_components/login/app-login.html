@@ -1,0 +1,141 @@
+<link rel="import" href="login-loginform.html">
+<dom-module id="app-login">
+
+    <template>
+
+        <firebase-auth
+            id="firebase_auth"
+            statusKnown="{{statusKnown}}"
+            user="{{user}}"
+            provider="github"
+            location="https://sweltering-fire-2420.firebaseio.com"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
+        <div class="topBar">
+
+            <div class="topRight">
+
+                <div class="formToggle">
+                    <p>Register</p>
+                </div>
+
+                <div class="formToggle active">
+                    <p>Login</p>
+                </div>
+
+            </div>
+
+            <h1>Competency Browser</h1>
+
+            <p>A tool for viewing and editing competencies.</p>
+
+        </div>
+
+        <login-loginform></login-loginform>
+
+<!--
+        <template is="dom-if" if="{{user}}">
+            <span>{{user.github.username}}</span>
+            <paper-button on-click="logout">Logout</paper-button>
+            <paper-button on-click="addCompetency">Add to the database</paper-button>
+        </template>
+-->
+
+    </template>
+
+    <style>
+
+        :host {
+            display: block;
+            height: 560px;
+            width: 800px;
+            background-color: #f6f7fa;
+            color: #8492af;
+            margin: 100px auto auto auto;
+
+        }
+
+        h1, p{
+            margin: 0;
+            padding: 0;
+        }
+        .topBar {
+            margin: 0;
+            padding: 5px 0px 5px 20px;
+            background-color: #3c7d15;
+            color: #fff;
+            height: 60px;
+        }
+        .topRight {
+            float: right;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .formToggle {
+            display: table-cell;
+            width: 100px;
+            height: 60px;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+
+        }
+        .active {
+            border-bottom: #385768 solid 5px;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'app-login',
+
+            properties: {
+
+                user: Object,
+
+            },
+
+            ready: function() {
+
+              this.showLogin = true;
+
+            },
+
+            addCompetency: function(){
+
+               document.querySelector('app-database').addCompetency();
+
+            },
+
+            login: function(){
+
+                this.$.firebase_auth.login();
+                this.showLogin = false;
+
+            },
+
+            logout: function(){
+
+                this.$.firebase_auth.logout();
+                this.showLogin = true;
+
+            },
+
+            onLogin: function() {
+
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>
