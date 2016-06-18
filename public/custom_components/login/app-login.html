@@ -3,16 +3,6 @@
 
     <template>
 
-        <firebase-auth
-            id="firebase_auth"
-            statusKnown="{{statusKnown}}"
-            user="{{user}}"
-            provider="github"
-            location="https://sweltering-fire-2420.firebaseio.com"
-            on-login="onLogin"
-            on-error="onLoginError">
-        </firebase-auth>
-
         <div class="topBar">
 
             <div class="topRight">
@@ -115,9 +105,9 @@
 
             },
 
-            login: function(){
+            githubLogin: function(){
 
-                this.$.firebase_auth.login();
+                this.$.auth-github.login();
                 this.showLogin = false;
 
             },

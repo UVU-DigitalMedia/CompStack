@@ -2,6 +2,26 @@
 
     <template>
 
+        <firebase-auth
+            id="authGithub"
+            statusKnown="{{statusKnown}}"
+            user="{{user}}"
+            provider="github"
+            location="https://sweltering-fire-2420.firebaseio.com"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
+        <firebase-auth
+            id="authGoogle"
+            statusKnown="{{statusKnown}}"
+            user="{{user}}"
+            provider="google"
+            location="https://sweltering-fire-2420.firebaseio.com"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
         <h2>Welcome <span class="darken">Back!</span></h2>
 
         <div class="input-container">
@@ -18,11 +38,13 @@
 
         <div class="btn-container">
 
-            <paper-button class="login google" on-tap="login"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
+            <paper-button class="login google" on-tap="googleLogin"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
 
-            <paper-button class="login github" on-tap="login"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
+            <paper-button class="login github" on-tap="githubLogin"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
 
         </div>
+
+        <paper-button on-tap="logout">logout</paper-button>
 
     </template>
 
@@ -87,7 +109,25 @@
     <script>
 
         Polymer({
-            is: 'login-loginform'
+            is: 'login-loginform',
+
+            githubLogin: function(){
+                this.$.authGithub.login();
+            },
+
+            googleLogin: function(){
+                this.$.authGoogle.login();
+            },
+
+            logout: function(){
+                this.$.authGithub.logout();
+                this.showLogin = true;
+            },
+
+            onLogin: function() {
+                alert('logged in')
+            }
+
         });
 
     </script>
