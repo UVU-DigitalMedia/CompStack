@@ -1,0 +1,70 @@
+<dom-module id="login-registerform">
+
+    <template>
+
+        <h2>Sign Up <span class="darken">Here!</span></h2>
+
+        <div class="input-container">
+
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="username" label="Username"></paper-input>
+
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
+
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="repeatPassword" type="password" label="Repeat Password"></paper-input>
+
+            <paper-input id="organization" label="Organization"></paper-input>
+
+        </div>
+
+        <paper-button class="login" on-tap="addUser">Sign Up</paper-button>
+
+    </template>
+
+    <style>
+        .input-container{
+            width: 400px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .darken {
+            color: #385768;
+        }
+        iron-icon, paper-input{
+            display: inline-block;
+        }
+        paper-input{
+            width: 375px;
+        }
+        .login {
+            display: block;
+            text-align: center;
+            color: #fff;
+            background-color: #385768;
+            border-radius: 20px;
+            width: 250px;
+            margin: 24px auto 24px auto;
+        }
+
+
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'login-registerform',
+
+            properties: {
+
+                firebase: Object
+
+            }
+
+        });
+
+    </script>
+
+</dom>

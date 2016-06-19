@@ -7,12 +7,12 @@
 
             <div class="topRight">
 
-                <div class="formToggle">
-                    <p>Register</p>
+                <div id="loginFormToggle" on-tap="showLogin" class$="formToggle {{loginActive}}">
+                    <p>Login</p>
                 </div>
 
-                <div class="formToggle active">
-                    <p>Login</p>
+                <div id="regFormToggle" on-tap="showRegistration" class$="formToggle {{regActive}}">
+                    <p>Register</p>
                 </div>
 
             </div>
@@ -23,15 +23,18 @@
 
         </div>
 
-        <login-loginform></login-loginform>
+        <login-loginform firebase="{{firebase}}" hidden$="{{hideLogin}}"></login-loginform>
+        <login-registerform firebase="{{firebase}}" hidden$="{{hideRegistration}}"></login-registerform>
 
-<!--
-        <template is="dom-if" if="{{user}}">
-            <span>{{user.github.username}}</span>
-            <paper-button on-click="logout">Logout</paper-button>
-            <paper-button on-click="addCompetency">Add to the database</paper-button>
-        </template>
--->
+        <h2><span class="line"></span>or<span class="line"></span></h2>
+
+            <div class="btn-container">
+
+            <paper-button class="login google" on-tap="googleLogin"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
+
+            <paper-button class="login github" on-tap="githubLogin"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
+
+        </div>
 
     </template>
 
@@ -39,14 +42,11 @@
 
         :host {
             display: block;
-            height: 560px;
             width: 800px;
             background-color: #f6f7fa;
             color: #8492af;
             margin: 100px auto auto auto;
-
         }
-
         h1, p{
             margin: 0;
             padding: 0;
@@ -78,6 +78,47 @@
         .active {
             border-bottom: #385768 solid 5px;
         }
+        h2 {
+            text-align: center;
+        }
+        .line {
+            display: inline-block;
+            background-color: #8492af;
+            height: 1px;
+            width: 100px;
+            vertical-align: middle;
+        }
+        .login {
+            display: block;
+            text-align: center;
+            color: #fff;
+            background-color: #385768;
+            border-radius: 20px;
+            width: 250px;
+            margin: 24px auto 24px auto;
+        }
+        .google {
+            display: inline-block;
+            background-color: #da0000;
+            width: 250px;
+        }
+        .github {
+            display: inline-block;
+            background-color: #808080;
+            width: 250px;
+        }
+        .google, .github {
+            margin: 24px;
+        }
+        .btn-container {
+            display: block;
+            width: 600px;
+            margin: auto;
+        }
+        .btn-icon {
+            height: 20px;
+            vertical-align: middle;
+        }
 
     </style>
 
@@ -89,38 +130,52 @@
 
             properties: {
 
+                firebase: Object,
                 user: Object,
+                hideLogin: {
+                    type: Boolean,
+                    value: false
+                },
+                hideRegistration: {
+                    type: Boolean,
+                    value: true
+                }
 
             },
 
-            ready: function() {
+            ready: function(){
 
-              this.showLogin = true;
+               this.loginActive = 'active';
 
             },
 
-            addCompetency: function(){
+            showLogin: function() {
 
-               document.querySelector('app-database').addCompetency();
+                this.hideLogin = false;
+                this.hideRegistration = true;
+                this.loginActive = 'active';
+                this.regActive = '';
+
+            },
+
+            showRegistration: function() {
+
+                this.hideLogin = true;
+                this.hideRegistration = false;
+                this.loginActive = '';
+                this.regActive = 'active';
 
             },
 
             githubLogin: function(){
 
-                this.$.auth-github.login();
-                this.showLogin = false;
+                this.firebase.githubLogin();
 
             },
 
-            logout: function(){
+            googleLogin: function(){
 
-                this.$.firebase_auth.logout();
-                this.showLogin = true;
-
-            },
-
-            onLogin: function() {
-
+                this.firebase.googleLogin();
 
             }
 

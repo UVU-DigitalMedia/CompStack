@@ -2,8 +2,9 @@
 
     <template>
 
-        <app-login></app-login>
-        <app-database></app-database>
+        <app-firebase id="firebase"></app-firebase>
+
+        <app-login firebase={{firebase}}></app-login>
 
     </template>
 
@@ -14,7 +15,16 @@
     <script>
 
         Polymer({
-        is: 'app-main',
+            is: 'app-main',
+
+            properties: {
+                firebase: Object,
+            },
+
+            ready: function() {
+                this.firebase = this.$.firebase
+            }
+
         });
 
     </script>

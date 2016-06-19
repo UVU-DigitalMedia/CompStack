@@ -1,7 +1,21 @@
-<dom-module id="app-database">
+<dom-module id="app-firebase">
 
     <template>
 
+        <firebase-app
+            auth-domain="sweltering-fire-2420.firebaseapp.com"
+            database-url="https://sweltering-fire-2420.firebaseio.com/"
+            apiKey="AIzaSyBvOhkQUVQa2gDbB0f7-tqHbYcA2SyJm7M">
+        </firebase-app>
+
+        <firebase-auth
+            id="auth"
+            user="{{user}}"
+            on-login="onLogin"
+            on-error="onLoginError">
+        </firebase-auth>
+
+<!--
         <firebase-collection id="collection_competencies"
             location="https://sweltering-fire-2420.firebaseio.com/competencies"
             data="{{competencies}}">
@@ -13,7 +27,6 @@
             order-by-child="department">
         </firebase-collection>
 
-<!--
         <paper-material>
 
             <template is="dom-repeat" items="[[competencies]]" as="competency">
@@ -54,29 +67,19 @@
 
     <style>
 
-        paper-material {
-
-            width: 35%;
-            display: inline-block;
-            vertical-align: top;
-            margin: 5px;
-            background-color: white;
-
-        }
-
-        paper-card {
-
-            margin: 5px;
-        }
-
-
     </style>
 
     <script>
 
         Polymer({
 
-            is: 'app-database',
+            is: 'app-firebase',
+
+            properties: {
+
+                user: Object
+
+            },
 
             addCompetency: function(){
 
@@ -84,20 +87,34 @@
 
             },
 
-            login: function(){
+            login: function(email, password){
 
-                this.$.firebase_auth.login();
+                console.log(this.$.auth + ' email is: ' + email + ' password is: ' + password);
+                this.$.auth.signInWithEmailAndPassword(email, password)
+
+            },
+
+            googleLogin: function(){
+
+                this.$.auth.signInWithPopup('google');
+
+            },
+
+            githubLogin: function(){
+
+                this.$.auth.signInWithPopup('github');
 
             },
 
             logout: function(){
 
-                this.$.firebase_auth.logout();
+                this.$.auth.signOut();
 
             },
 
             onLogin: function() {
 
+                alert('Logged In')
                 console.log(user);
 
             }
