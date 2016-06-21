@@ -4,7 +4,9 @@
 
         <app-firebase id="firebase"></app-firebase>
 
-        <app-login firebase={{firebase}}></app-login>
+        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}"></app-login>
+
+        <app-dashboard hidden$="{{!signedIn}}"></app-dashboard>
 
     </template>
 
@@ -19,10 +21,10 @@
 
             properties: {
                 firebase: Object,
-            },
-
-            ready: function() {
-                this.firebase = this.$.firebase
+                signedIn: {
+                    type: Boolean,
+                    value: false,
+                }
             }
 
         });

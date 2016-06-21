@@ -3,65 +3,10 @@
     <template>
 
         <firebase-app
-            auth-domain="sweltering-fire-2420.firebaseapp.com"
-            database-url="https://sweltering-fire-2420.firebaseio.com/"
-            apiKey="AIzaSyBvOhkQUVQa2gDbB0f7-tqHbYcA2SyJm7M">
+          auth-domain="sweltering-fire-2420.firebaseapp.com"
+          database-url="https://sweltering-fire-2420.firebaseio.com/"
+          api-key="AIzaSyDTP-eiQezleFsV2WddFBAhF_WEzx_8v_g">
         </firebase-app>
-
-        <firebase-auth
-            id="auth"
-            user="{{user}}"
-            on-login="onLogin"
-            on-error="onLoginError">
-        </firebase-auth>
-
-<!--
-        <firebase-collection id="collection_competencies"
-            location="https://sweltering-fire-2420.firebaseio.com/competencies"
-            data="{{competencies}}">
-        </firebase-collection>
-
-        <firebase-collection id="collection_courses"
-            location="https://sweltering-fire-2420.firebaseio.com/courses"
-            data="{{courses}}"
-            order-by-child="department">
-        </firebase-collection>
-
-        <paper-material>
-
-            <template is="dom-repeat" items="[[competencies]]" as="competency">
-
-                <paper-card heading="[[competency.__firebaseKey__]]">
-
-                    <div class="card-content">[[competency.title]]</div>
-
-                </paper-card>
-
-            </template>
-
-        </paper-material>
-
-        <paper-material>
-
-            <template is="dom-repeat" items="[[courses]]" as="course">
-
-                <paper-card heading="[[course.__firebaseKey__]]">
-
-                    <div class="card-content">
-
-                        <ul>
-                            <li><strong>Name:</strong> [[course.name]]</li>
-                            <li><strong>Description:</strong> [[course.description]]</li>
-                            <li><strong>Department:</strong> [[course.department]]</li>
-                        </ul>
-
-                    </div>
-
-                </paper-card>
-
-            </template>
-
-        </paper-material>-->
 
     </template>
 
@@ -77,45 +22,20 @@
 
             properties: {
 
-                user: Object
+                user: Object,
+                provider: String
+
+            },
+
+            ready: function() {
+
+
 
             },
 
             addCompetency: function(){
 
                 this.$.collection_competencies.add({assesments : {}, course: "Test Compentency, No Courses", creator: "dev-tester", modified: Date(), modules: {}, title: "Test Competency" } )
-
-            },
-
-            login: function(email, password){
-
-                console.log(this.$.auth + ' email is: ' + email + ' password is: ' + password);
-                this.$.auth.signInWithEmailAndPassword(email, password)
-
-            },
-
-            googleLogin: function(){
-
-                this.$.auth.signInWithPopup('google');
-
-            },
-
-            githubLogin: function(){
-
-                this.$.auth.signInWithPopup('github');
-
-            },
-
-            logout: function(){
-
-                this.$.auth.signOut();
-
-            },
-
-            onLogin: function() {
-
-                alert('Logged In')
-                console.log(user);
 
             }
 

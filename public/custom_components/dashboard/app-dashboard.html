@@ -1,0 +1,41 @@
+<dom-module id="app-dashboard">
+
+    <template>
+
+        <h1>Welcome to the Dashboard</h1>
+
+        <paper-button on-tap="logout">Logout</paper-button>
+
+    </template>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'app-dashboard',
+
+            properties: {
+
+
+            },
+
+            ready: function() {
+
+
+            },
+
+            logout: function(){
+
+                document.getElementById('login').logout();
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>

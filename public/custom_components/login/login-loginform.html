@@ -6,13 +6,23 @@
 
         <div class="input-container">
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="username" label="Username"></paper-input><br/>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input><br/>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
 
         </div>
 
         <paper-button class="login" on-tap="login">Login</paper-button>
+
+        <h2><span class="line"></span>or<span class="line"></span></h2>
+
+        <div class="btn-container">
+
+            <paper-button class="login google" on-tap="googleLogin"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
+
+            <paper-button class="login github" on-tap="githubLogin"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
+
+        </div>
 
     </template>
 
@@ -55,6 +65,28 @@
             width: 600px;
             margin: auto;
         }
+        .google {
+            display: inline-block;
+            background-color: #da0000;
+            width: 250px;
+        }
+        .github {
+            display: inline-block;
+            background-color: #808080;
+            width: 250px;
+        }
+        .google, .github {
+            margin: 24px;
+        }
+        .btn-container {
+            display: block;
+            width: 600px;
+            margin: auto;
+        }
+        .btn-icon {
+            height: 20px;
+            vertical-align: middle;
+        }
     </style>
 
     <script>
@@ -65,13 +97,55 @@
 
             properties: {
 
-                firebase: Object
+                auth: Object,
+                signedIn: {
+                    type: Boolean,
+                    notify: true
+                }
 
             },
 
-            login: function(){
+            login: function(email, password){
 
-                this.firebase.login(this.$.username.value, this.$.password.value);
+                var email= this.$.email.value
+                var password = this.$.password.value
+
+                auth.signInWithEmailAndPassword(email, password);
+
+            },
+
+            googleLogin: function(){
+
+                var provider = new firebase.auth.GoogleAuthProvider();
+
+                auth.signInWithPopup(provider)
+                    .then(this.onLogin)
+                    .catch(this.loginError);
+
+            },
+
+            githubLogin: function(){
+
+                var provider = new firebase.auth.GithubAuthProvider();
+
+                auth.signInWithPopup(provider)
+                    .then(this.onLogin)
+                    .catch(this.loginError);
+
+            },
+
+            onLogin: function(response) {
+
+                this.signedIn =  auth.signedIn;
+
+            },
+
+            onLogout: function(response) {
+
+
+                console.log('Logged Out')
+                console.log(response);
+                this.signedIn = auth.signedIn;
 
             }
 
@@ -79,4 +153,4 @@
 
     </script>
 
-</dom>
+</dom-module>

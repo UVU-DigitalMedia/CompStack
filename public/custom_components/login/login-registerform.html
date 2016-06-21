@@ -6,13 +6,11 @@
 
         <div class="input-container">
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="username" label="Username"></paper-input>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="repeatPassword" type="password" label="Repeat Password"></paper-input>
-
-            <paper-input id="organization" label="Organization"></paper-input>
 
         </div>
 
@@ -59,7 +57,18 @@
 
             properties: {
 
-                firebase: Object
+                auth: Object
+
+            },
+
+            addUser: function(){
+
+                var email = this.$.email.value;
+                var password = this.$.password.value;
+
+                console.log('Email is: '+ email + ' Password is: ' + password)
+
+                auth.createUserWithEmailAndPassword(email, password)
 
             }
 
