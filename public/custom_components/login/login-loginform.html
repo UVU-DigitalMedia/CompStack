@@ -105,12 +105,16 @@
 
             },
 
-            login: function(email, password){
+            login: function(){
 
-                var email= this.$.email.value
-                var password = this.$.password.value
+                var email = this.$.email.value;
+                var password = this.$.password.value;
 
-                auth.signInWithEmailAndPassword(email, password);
+                auth.signInWithEmailAndPassword(email, password)
+                    .then(this.onLogin)
+                    .catch(this.loginError);
+
+                this.signedIn = true;
 
             },
 
@@ -136,18 +140,22 @@
 
             onLogin: function(response) {
 
-                this.signedIn =  auth.signedIn;
+                this.signedIn = auth.signedIn;
+
 
             },
 
             onLogout: function(response) {
 
-
-                console.log('Logged Out')
-                console.log(response);
                 this.signedIn = auth.signedIn;
 
-            }
+            },
+
+            loginError: function(error) {
+
+                console.log('Login Error: ' + error.detail.message);
+
+            },
 
         });
 

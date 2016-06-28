@@ -14928,7 +14928,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-firebase id="firebase"></app-firebase>
 
-        <app-login firebase="{{firebase}}"></app-login>
+        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}"></app-login>
+
+        <app-dashboard hidden$="{{!signedIn}}"></app-dashboard>
 
     </template>
 
@@ -14943,10 +14945,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
                 firebase: Object,
-            },
-
-            ready: function() {
-                this.firebase = this.$.firebase
+                signedIn: {
+                    type: Boolean,
+                    value: false,
+                }
             }
 
         });
@@ -14958,59 +14960,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <template>
 
-        <firebase-app auth-domain="sweltering-fire-2420.firebaseapp.com" database-url="https://sweltering-fire-2420.firebaseio.com/" apikey="AIzaSyBvOhkQUVQa2gDbB0f7-tqHbYcA2SyJm7M">
+        <firebase-app auth-domain="AIzaSyBvOhkQUVQa2gDbB0f7-tqHbYcA2SyJm7M" database-url="https://sweltering-fire-2420.firebaseio.com/" api-key="AIzaSyBvOhkQUVQa2gDbB0f7-tqHbYcA2SyJm7M">
         </firebase-app>
-
-        <firebase-auth id="auth" user="{{user}}" on-login="onLogin" on-error="onLoginError">
-        </firebase-auth>
-
-<!--
-        <firebase-collection id="collection_competencies"
-            location="https://sweltering-fire-2420.firebaseio.com/competencies"
-            data="{{competencies}}">
-        </firebase-collection>
-
-        <firebase-collection id="collection_courses"
-            location="https://sweltering-fire-2420.firebaseio.com/courses"
-            data="{{courses}}"
-            order-by-child="department">
-        </firebase-collection>
-
-        <paper-material>
-
-            <template is="dom-repeat" items="[[competencies]]" as="competency">
-
-                <paper-card heading="[[competency.__firebaseKey__]]">
-
-                    <div class="card-content">[[competency.title]]</div>
-
-                </paper-card>
-
-            </template>
-
-        </paper-material>
-
-        <paper-material>
-
-            <template is="dom-repeat" items="[[courses]]" as="course">
-
-                <paper-card heading="[[course.__firebaseKey__]]">
-
-                    <div class="card-content">
-
-                        <ul>
-                            <li><strong>Name:</strong> [[course.name]]</li>
-                            <li><strong>Description:</strong> [[course.description]]</li>
-                            <li><strong>Department:</strong> [[course.department]]</li>
-                        </ul>
-
-                    </div>
-
-                </paper-card>
-
-            </template>
-
-        </paper-material>-->
 
     </template>
 
@@ -15026,45 +14977,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
-                user: Object
+                user: Object,
+                provider: String
+
+            },
+
+            ready: function() {
+
+
 
             },
 
             addCompetency: function(){
 
                 this.$.collection_competencies.add({assesments : {}, course: "Test Compentency, No Courses", creator: "dev-tester", modified: Date(), modules: {}, title: "Test Competency" } )
-
-            },
-
-            login: function(email, password){
-
-                console.log(this.$.auth + ' email is: ' + email + ' password is: ' + password);
-                this.$.auth.signInWithEmailAndPassword(email, password)
-
-            },
-
-            googleLogin: function(){
-
-                this.$.auth.signInWithPopup('google');
-
-            },
-
-            githubLogin: function(){
-
-                this.$.auth.signInWithPopup('github');
-
-            },
-
-            logout: function(){
-
-                this.$.auth.signOut();
-
-            },
-
-            onLogin: function() {
-
-                alert('Logged In')
-                console.log(user);
 
             }
 
@@ -15081,13 +15007,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <div class="input-container">
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="username" label="Username"></paper-input><br>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input><br>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
 
         </div>
 
         <paper-button class="login" on-tap="login">Login</paper-button>
+
+        <h2><span class="line"></span>or<span class="line"></span></h2>
+
+        <div class="btn-container">
+
+            <paper-button class="login google" on-tap="googleLogin"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
+
+            <paper-button class="login github" on-tap="githubLogin"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
+
+        </div>
 
     </template>
 
@@ -15130,6 +15066,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             width: 600px;
             margin: auto;
         }
+        .google {
+            display: inline-block;
+            background-color: #da0000;
+            width: 250px;
+        }
+        .github {
+            display: inline-block;
+            background-color: #808080;
+            width: 250px;
+        }
+        .google, .github {
+            margin: 24px;
+        }
+        .btn-container {
+            display: block;
+            width: 600px;
+            margin: auto;
+        }
+        .btn-icon {
+            height: 20px;
+            vertical-align: middle;
+        }
     </style>
 
     <script>
@@ -15140,24 +15098,70 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
-                firebase: Object
+                auth: Object,
+                signedIn: {
+                    type: Boolean,
+                    notify: true
+                }
 
             },
 
-            login: function(){
+            login: function(email, password){
 
-                this.firebase.login(this.$.username.value, this.$.password.value);
+                alert('logging in');
+                this.signedIn = true;
 
-            }
+            },
+
+            googleLogin: function(){
+
+                var provider = new firebase.auth.GoogleAuthProvider();
+
+                auth.signInWithPopup(provider)
+                    .then(this.onLogin)
+                    .catch(this.loginError);
+
+            },
+
+            githubLogin: function(){
+
+                var provider = new firebase.auth.GithubAuthProvider();
+
+                auth.signInWithPopup(provider)
+                    .then(this.onLogin)
+                    .catch(this.loginError);
+
+            },
+
+            onLogin: function(response) {
+
+                this.signedIn = auth.signedIn;
+
+
+            },
+
+            onLogout: function(response) {
+
+                this.signedIn = auth.signedIn;
+
+            },
+
+            loginError: function(error) {
+
+                console.log('Login Error: ' + error.detail.message);
+
+            },
 
         });
 
     </script>
 
-
-</dom-module><dom-module id="app-login" assetpath="custom_components/login/">
+</dom-module>
+<dom-module id="app-login" assetpath="custom_components/login/">
 
     <template>
+
+        <firebase-auth id="auth" user="{{user}}" on-error="loginError"></firebase-auth>
 
         <div class="topBar">
 
@@ -15179,18 +15183,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         </div>
 
-        <login-loginform firebase="{{firebase}}" hidden$="{{hideLogin}}"></login-loginform>
-        <login-registerform firebase="{{firebase}}" hidden$="{{hideRegistration}}"></login-registerform>
+        <login-loginform auth="{{auth}}" signed-in="{{signedIn}}" hidden$="{{hideLogin}}"></login-loginform>
 
-        <h2><span class="line"></span>or<span class="line"></span></h2>
-
-            <div class="btn-container">
-
-            <paper-button class="login google" on-tap="googleLogin"><img class="btn-icon" src="/images/google.png"> Sign in with GOOGLE</paper-button>
-
-            <paper-button class="login github" on-tap="githubLogin"><img class="btn-icon" src="/images/github.png"> Sign in with GITHUB</paper-button>
-
-        </div>
+        <login-registerform auth="{{auth}}" hidden$="{{hideRegistration}}"></login-registerform>
 
     </template>
 
@@ -15199,6 +15194,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         :host {
             display: block;
             width: 800px;
+            height: 500px;
             background-color: #f6f7fa;
             color: #8492af;
             margin: 100px auto auto auto;
@@ -15253,28 +15249,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             width: 250px;
             margin: 24px auto 24px auto;
         }
-        .google {
-            display: inline-block;
-            background-color: #da0000;
-            width: 250px;
-        }
-        .github {
-            display: inline-block;
-            background-color: #808080;
-            width: 250px;
-        }
-        .google, .github {
-            margin: 24px;
-        }
-        .btn-container {
-            display: block;
-            width: 600px;
-            margin: auto;
-        }
-        .btn-icon {
-            height: 20px;
-            vertical-align: middle;
-        }
 
     </style>
 
@@ -15286,12 +15260,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
-                firebase: Object,
-                user: Object,
+                auth: Object,
+                user: {
+                    type: Object,
+                    notify: true
+                },
+                signedIn: {
+                    type: Boolean,
+                    notify: true
+                },
                 hideLogin: {
                     type: Boolean,
                     value: false
                 },
+
                 hideRegistration: {
                     type: Boolean,
                     value: true
@@ -15301,7 +15283,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             ready: function(){
 
-               this.loginActive = 'active';
+                this.loginActive = 'active';
 
             },
 
@@ -15323,15 +15305,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             },
 
-            githubLogin: function(){
+            loginError: function(error) {
 
-                this.firebase.githubLogin();
+                console.log(error.detail.message);
 
             },
 
-            googleLogin: function(){
+            logout: function(){
 
-                this.firebase.googleLogin();
+                auth.signOut()
+                    .then(this.onLogout)
+                    .catch(this.loginError);
+
+                this.signedIn = auth.signedIn;
+
+            },
+
+            onLogout: function(response) {
+
+                console.log('Logged Out')
 
             }
 
@@ -15348,13 +15340,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <div class="input-container">
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="username" label="Username"></paper-input>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
 
             <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="repeatPassword" type="password" label="Repeat Password"></paper-input>
-
-            <paper-input id="organization" label="Organization"></paper-input>
 
         </div>
 
@@ -15401,7 +15391,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
-                firebase: Object
+                auth: Object
+
+            },
+
+            addUser: function(){
+
+                var email = this.$.email.value;
+                var password = this.$.password.value;
+
+                console.log('Email is: '+ email + ' Password is: ' + password)
+
+                auth.createUserWithEmailAndPassword(email, password)
 
             }
 
@@ -15410,7 +15411,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </script>
 
 
-</dom-module><!--
+</dom-module><dom-module id="app-dashboard" assetpath="custom_components/dashboard/">
+
+    <template>
+
+        <h1>Welcome to the Dashboard</h1>
+
+        <paper-button on-tap="logout">Logout</paper-button>
+
+    </template>
+
+    <style>
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'app-dashboard',
+
+            properties: {
+
+
+            },
+
+            ready: function() {
+
+
+            },
+
+            logout: function(){
+
+                document.getElementById('login').logout();
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>
+<!--
 @license
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by a BSD-style
@@ -28026,9 +28068,20 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
     })();
   </script>
 </dom-module>
+<!-- New Polymerfire element haven't been able to make it work yet-->
+<!--old school firebase-element will be replaced by Polymerfire when polymerfire issues are resolved-->
+<!--
+<link rel="import" href="bower_components/firebase-element/firebase.html">
+<link rel="import" href="bower_components/firebase-element/firebase-.html">
+<link rel="import" href="bower_components/firebase-element/firebase-auth.html">
+<link rel="import" href="bower_components/firebase-element/firebase-document.html">
+<link rel="import" href="bower_components/firebase-element/firebase-collection.html">
+-->
+
+<!--Polymer Catalog-->
 </div>
 
-    <app-main></app-main>
+    <app-main id="app"></app-main>
 
 
 
