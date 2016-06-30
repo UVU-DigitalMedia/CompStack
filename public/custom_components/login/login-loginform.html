@@ -114,8 +114,6 @@
                     .then(this.onLogin)
                     .catch(this.loginError);
 
-                this.signedIn = true;
-
             },
 
             googleLogin: function(){
@@ -123,8 +121,8 @@
                 var provider = new firebase.auth.GoogleAuthProvider();
 
                 auth.signInWithPopup(provider)
-                    .then(this.onLogin)
-                    .catch(this.loginError);
+                    .then(this.onLogin.bind(this))
+                    .catch(this.loginError.bind(this));
 
             },
 
@@ -133,15 +131,14 @@
                 var provider = new firebase.auth.GithubAuthProvider();
 
                 auth.signInWithPopup(provider)
-                    .then(this.onLogin)
-                    .catch(this.loginError);
+                    .then(this.onLogin.bind(this))
+                    .catch(this.loginError.bind(this));
 
             },
 
             onLogin: function(response) {
 
                 this.signedIn = auth.signedIn;
-
 
             },
 

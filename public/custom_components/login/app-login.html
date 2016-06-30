@@ -156,16 +156,14 @@
             logout: function(){
 
                 auth.signOut()
-                    .then(this.onLogout)
+                    .then(this.onLogout.bind(this))
                     .catch(this.loginError);
-
-                this.signedIn = auth.signedIn;
 
             },
 
             onLogout: function(response) {
 
-                console.log('Logged Out')
+                this.signedIn = auth.signedIn;
 
             }
 
