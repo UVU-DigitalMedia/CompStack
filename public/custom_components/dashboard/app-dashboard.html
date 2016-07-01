@@ -20,7 +20,7 @@
 
                     <paper-input id="search" label="search"></paper-input>
 
-                    <paper-button horizontal end-justified layout class="outbtn" on-tap="logout">Logout</paper-button>
+                    <dashboard-logout></dashboard-logout>
 
                 </paper-toolbar>
 
@@ -75,11 +75,14 @@
 
             properties: {
 
+                user: {
+                    type: Object,
+                    notify: true
+                }
 
             },
 
             ready: function() {
-
 
             },
 

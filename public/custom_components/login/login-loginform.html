@@ -122,7 +122,7 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError.bind(this));
+                    .catch(this.loginError);
 
             },
 
@@ -132,24 +132,19 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError.bind(this));
+                    .catch(this.loginError);
 
             },
 
             onLogin: function(response) {
 
-                this.signedIn = auth.signedIn;
-
-            },
-
-            onLogout: function(response) {
-
-                this.signedIn = auth.signedIn;
+                this.signedIn = true;
 
             },
 
             loginError: function(error) {
 
+                console.log(error);
                 console.log('Login Error: ' + error.detail.message);
 
             },

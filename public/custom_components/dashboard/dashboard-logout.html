@@ -1,0 +1,34 @@
+<dom-module id="dashboard-logout">
+
+    <template>
+
+        <paper-button on-tap="logout">Logout</paper-button>
+
+    </template>
+
+    <style>
+
+        :host {
+            float: right;
+            color: black;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-logout',
+
+            logout: function(){
+
+                document.getElementById('login').logout();
+
+            }
+
+        });
+
+    </script>
+
+</dom-module>

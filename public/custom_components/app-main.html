@@ -4,9 +4,9 @@
 
         <app-firebase id="firebase"></app-firebase>
 
-        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}"></app-login>
+        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}" user="{{user}}"></app-login>
 
-        <app-dashboard hidden$="{{!signedIn}}"></app-dashboard>
+        <app-dashboard hidden$="{{!signedIn}}" user="{{user}}"></app-dashboard>
 
     </template>
 
@@ -24,7 +24,8 @@
                 signedIn: {
                     type: Boolean,
                     value: false,
-                }
+                },
+                user: Object
             },
 
             outputLogin: function()
