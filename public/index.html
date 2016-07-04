@@ -15370,7 +15370,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module><dom-module id="app-dashboard" assetpath="custom_components/dashboard/">
+</dom-module>
+<dom-module id="app-dashboard" assetpath="custom_components/dashboard/">
 
     <template>
 
@@ -15488,7 +15489,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module><dom-module id="dashboard-logout" assetpath="custom_components/dashboard/">
+</dom-module>
+<dom-module id="dashboard-logout" assetpath="custom_components/dashboard/">
 
     <template>
 
@@ -15559,7 +15561,78 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-</dom-module><!--
+</dom-module>
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+  (function() {
+    'use strict';
+
+    var networkStatusSubscribers = [];
+
+    function notifySubscribers() {
+      for (var i = 0; i < networkStatusSubscribers.length; ++i) {
+        networkStatusSubscribers[i].refreshNetworkStatus();
+      }
+    }
+
+    window.addEventListener('online', notifySubscribers);
+    window.addEventListener('offline', notifySubscribers);
+
+    /**
+     * `Polymer.appNetworkStatusBehavior` tracks the status of whether the browser
+     * is online or offline. True if the browser is online, and false if the browser is
+     * offline matching the HTML browser state spec.
+     *
+     * @polymerBehavior
+     */
+    Polymer.AppNetworkStatusBehavior = {
+      properties: {
+        /**
+         * True if the browser is online, and false if the browser is offline
+         * matching the HTML browser state spec.
+         *
+         * @type {Boolean}
+         */
+        online: {
+          type: Boolean,
+          readOnly: true,
+          notify: true,
+          value: function() {
+            return window.navigator.onLine;
+          }
+        }
+      },
+
+      attached: function() {
+        networkStatusSubscribers.push(this);
+        this.refreshNetworkStatus();
+      },
+
+      detached: function() {
+        var index = networkStatusSubscribers.indexOf(this);
+        if (index < 0) {
+          return;
+        }
+        networkStatusSubscribers.splice(index, 1);
+      },
+
+      /**
+       * Updates the `online` property to reflect the browser connection status.
+       */
+      refreshNetworkStatus: function() {
+        this._setOnline(window.navigator.onLine);
+      }
+    };
+  })();
+</script>
+<!--
 @license
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by a BSD-style
@@ -16218,6 +16291,63 @@ Y.prototype.capi_=function(a){ka=a};W.prototype.on=W.prototype.I;W.prototype.res
 ta.STATE_CHANGED="state_changed";ua.RUNNING="running";ua.PAUSED="paused";ua.SUCCESS="success";ua.CANCELED="canceled";ua.ERROR="error";H.prototype["catch"]=H.prototype.l;H.prototype.then=H.prototype.then;
 (function(){function a(a){return new Y(a)}var b={TaskState:ua,TaskEvent:ta,Storage:Y,Reference:X};if(window.firebase&&firebase.INTERNAL&&firebase.INTERNAL.registerService)firebase.INTERNAL.registerService("storage",a,b);else throw Error("Cannot install Firebase Storage - be sure to load firebase-app.js first.");})();})();
 </script>
+<script>
+  (function() {
+    'use strict';
+
+    Polymer.FirebaseCommonBehaviorImpl = {
+      properties: {
+        app: {
+          type: Object,
+          notify: true,
+          observer: '__appChanged'
+        },
+
+        appName: {
+          type: String,
+          notify: true,
+          value: '',
+          observer: '__appNameChanged'
+        }
+      },
+
+      __appNameChanged: function(appName) {
+        if (this.app && this.app.name === appName) {
+          return;
+        }
+
+        try {
+          if (appName == null) {
+            this.app = firebase.app();
+          } else {
+            this.app = firebase.app(appName);
+          }
+        } catch (e) {
+          // appropriate app hasn't been initialized yet
+        }
+      },
+
+      __appChanged: function(app) {
+        if (app && app.name === this.appName) {
+          return;
+        }
+
+        this.appName = app ? app.name : '';
+      }
+    };
+
+    Polymer.FirebaseCommonBehavior = [
+      Polymer.AppNetworkStatusBehavior,
+      Polymer.FirebaseCommonBehaviorImpl
+    ];
+  })();
+</script><!--
+@license
+Copyright 2016 Google Inc. All Rights Reserved.
+Use of this source code is governed by a BSD-style
+license that can be found in the LICENSE file or at
+https://github.com/firebase/polymerfire/blob/master/LICENSE
+-->
 <!--
 @license
 Copyright 2016 Google Inc. All Rights Reserved.
@@ -16318,133 +16448,6 @@ https://github.com/firebase/polymerfire/blob/master/LICENSE
     })();
   </script>
 </dom-module>
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><script>
-  (function() {
-    'use strict';
-
-    var networkStatusSubscribers = [];
-
-    function notifySubscribers() {
-      for (var i = 0; i < networkStatusSubscribers.length; ++i) {
-        networkStatusSubscribers[i].refreshNetworkStatus();
-      }
-    }
-
-    window.addEventListener('online', notifySubscribers);
-    window.addEventListener('offline', notifySubscribers);
-
-    /**
-     * `Polymer.appNetworkStatusBehavior` tracks the status of whether the browser
-     * is online or offline. True if the browser is online, and false if the browser is
-     * offline matching the HTML browser state spec.
-     *
-     * @polymerBehavior
-     */
-    Polymer.AppNetworkStatusBehavior = {
-      properties: {
-        /**
-         * True if the browser is online, and false if the browser is offline
-         * matching the HTML browser state spec.
-         *
-         * @type {Boolean}
-         */
-        online: {
-          type: Boolean,
-          readOnly: true,
-          notify: true,
-          value: function() {
-            return window.navigator.onLine;
-          }
-        }
-      },
-
-      attached: function() {
-        networkStatusSubscribers.push(this);
-        this.refreshNetworkStatus();
-      },
-
-      detached: function() {
-        var index = networkStatusSubscribers.indexOf(this);
-        if (index < 0) {
-          return;
-        }
-        networkStatusSubscribers.splice(index, 1);
-      },
-
-      /**
-       * Updates the `online` property to reflect the browser connection status.
-       */
-      refreshNetworkStatus: function() {
-        this._setOnline(window.navigator.onLine);
-      }
-    };
-  })();
-</script>
-<!--
-@license
-Copyright 2016 Google Inc. All Rights Reserved.
-Use of this source code is governed by a BSD-style
-license that can be found in the LICENSE file or at
-https://github.com/firebase/polymerfire/blob/master/LICENSE
---><script>
-  (function() {
-    'use strict';
-
-    Polymer.FirebaseCommonBehaviorImpl = {
-      properties: {
-        app: {
-          type: Object,
-          notify: true,
-          observer: '__appChanged'
-        },
-
-        appName: {
-          type: String,
-          notify: true,
-          value: '',
-          observer: '__appNameChanged'
-        }
-      },
-
-      __appNameChanged: function(appName) {
-        if (this.app && this.app.name === appName) {
-          return;
-        }
-
-        try {
-          if (appName == null) {
-            this.app = firebase.app();
-          } else {
-            this.app = firebase.app(appName);
-          }
-        } catch (e) {
-          // appropriate app hasn't been initialized yet
-        }
-      },
-
-      __appChanged: function(app) {
-        if (app && app.name === this.appName) {
-          return;
-        }
-
-        this.appName = app ? app.name : '';
-      }
-    };
-
-    Polymer.FirebaseCommonBehavior = [
-      Polymer.AppNetworkStatusBehavior,
-      Polymer.FirebaseCommonBehaviorImpl
-    ];
-  })();
-</script>
 <!--
 @license
 Copyright 2016 Google Inc. All Rights Reserved.

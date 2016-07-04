@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vulcanize public/src-index.html > public/index.html && nodemon ./bin/www"
+    "start": "vulcanize public/src-index.html > public/index.html && reload -d public/ -s src-index.html -p 3000 -b",
+    "checkapp": "polylint --root public/ --input src-index.html"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -13,6 +14,7 @@
     "express": "^4.13.4",
     "morgan": "~1.6.1",
     "nodemon": "^1.9.2",
+    "polylint": "^2.10.1",
     "serve-favicon": "~2.3.0"
   },
   "description": "This is where we build the competency definition, mapping, and storage web app.",
@@ -32,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/UVU-DigitalMedia/CompStack/issues"
   },
-  "homepage": "https://github.com/UVU-DigitalMedia/CompStack#readme"
+  "homepage": "https://github.com/UVU-DigitalMedia/CompStack#readme",
+  "devDependencies": {
+    "reload": "^1.0.0"
+  }
 }
