@@ -25,7 +25,7 @@
 
         </div>
 
-        <login-loginform auth="{{auth}}" signed-in="{{signedIn}}" hidden$="{{hideLogin}}" user="{{user}}"></login-loginform>
+        <login-loginform id="loginform" auth="{{auth}}" signed-in="{{signedIn}}" hidden$="{{hideLogin}}" user="{{user}}"></login-loginform>
 
         <login-registerform auth="{{auth}}" hidden$="{{hideRegistration}}"></login-registerform>
 
@@ -149,7 +149,7 @@
 
             loginError: function(error) {
 
-                console.log(error.detail.message);
+                this.$.loginform.errorMessage = error.detail.message;
 
             },
 

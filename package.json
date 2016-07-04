@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "vulcanize public/src-index.html > public/index.html && reload -d public/ -s src-index.html -p 3000 -b",
-    "checkapp": "polylint --root public/ --input src-index.html"
+    "start": "reload -d public/ -s src-index.html -p 3000 -b",
+    "checkapp": "polylint --root public/ --input src-index.html",
+    "spock": "vulcanize public/src-index.html > public/index.html"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

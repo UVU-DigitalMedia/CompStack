@@ -104,6 +104,9 @@
             properties: {
 
                 auth: Object,
+                email: String,
+                password: String,
+                errorMessage: String,
                 signedIn: {
                     type: Boolean,
                     notify: true
@@ -168,14 +171,7 @@
             onLogin: function(response) {
 
 
-            },
-
-            loginError: function(error) {
-
-                this.errorMessage += error.detail.message;
-                console.log('Login Error: ' + error.detail.message);
-
-            },
+            }
 
         });
 

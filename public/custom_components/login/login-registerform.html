@@ -4,17 +4,23 @@
 
         <h2>Sign Up <span class="darken">Here!</span></h2>
 
-        <div class="input-container">
+        <div class="loginError">[[errorMessage]]</div>
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input>
+        <div id="inputContainer" class="input-container">
 
-            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" type="email" value="{{email}}" label="Email"></paper-input>
 
-            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="repeatPassword" type="password" label="Repeat Password"></paper-input>
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" value="{{password}}" type="password" label="Password"></paper-input>
+
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="repeatPassword" value="{{passwordRepeat}}" type="password" label="Repeat Password"></paper-input>
+
+            <iron-icon icon="communication:business"></iron-icon><paper-input id="organization" value="{{organization}}" type="text" label="Organization"></paper-input>
 
         </div>
 
-        <paper-button class="login" on-tap="addUser">Sign Up</paper-button>
+        <div id="successContainer"></div>
+
+        <paper-button id="signUpButton" class="login" on-tap="addUser">Sign Up</paper-button>
 
     </template>
 
@@ -44,8 +50,14 @@
             width: 250px;
             margin: 24px auto 24px auto;
         }
-
-
+        .loginError{
+            color: red;
+            text-align: center;
+        }
+        #successContainer{
+            color: green;
+            text-align: center;
+        }
 
     </style>
 
@@ -57,18 +69,79 @@
 
             properties: {
 
-                auth: Object
+                auth: Object,
+                email: String,
+                password: String,
+                passwordRepeat: String,
+                organization: String,
+                errorMessage: String
+
+            },
+
+            validate: function(event){
+
+                var valid = true;
+                this.errorMessage = '';
+
+                console.log('Email is ' + this.email);
+
+                //regular expression for email addresses
+                var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+
+                if(this.email == '' || !re.test(this.email)){
+
+                    valid = false;
+                    this.errorMessage += 'Email is not valid. ';
+
+                }
+
+                if(this.password == ''){
+
+                    valid = false;
+                    this.errorMessage += 'Password is blank. ';
+
+                }
+                else if(this.password !== this.passwordRepeat){
+
+                    valid = false;
+                    this.errorMessage += 'Passwords do not match. ';
+
+                }
+
+                if(this.organization == ''){
+
+                    this.errorMessage += 'Organization is blank. '
+
+                }
+
+                return valid;
 
             },
 
             addUser: function(){
 
-                var email = this.$.email.value;
-                var password = this.$.password.value;
+                if(this.validate()) {
 
-                console.log('Email is: '+ email + ' Password is: ' + password)
+                    auth.createUserWithEmailAndPassword(this.email, this.password)
+                        .then(this.onCreateUserSuccess.bind(this))
+                        .catch(this.onCreateUserError.bind(this));
 
-                auth.createUserWithEmailAndPassword(email, password)
+                }
+
+            },
+
+            onCreateUserSuccess: function(){
+
+                this.$.inputContainer.style.display = 'none';
+                this.$.signUpButton.style.display = 'none';
+                this.$.successContainer.innerHTML = '<p>User created succesfully!<br/> Go back to the login form.</p>'
+
+
+            },
+
+            onCreateUserError: function(error){
+
+                this.errorMessage = error.detail.message;
 
             }
 
