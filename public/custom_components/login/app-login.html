@@ -3,7 +3,7 @@
 
     <template>
 
-        <firebase-auth id="auth" user="{{user}}" on-error="loginError"></firebase-auth>
+        <firebase-auth id="auth" user="{{user}}" on-error="loginError" signed-in="{{signedIn}}"></firebase-auth>
 
         <div class="topBar">
 
@@ -163,7 +163,6 @@
 
             onLogout: function(response) {
 
-                this.signedIn = false;
 
             }
 

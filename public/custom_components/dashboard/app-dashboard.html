@@ -12,23 +12,9 @@
 
             <paper-header-panel main>
 
-                <paper-toolbar class="topbar">
+                <dashboard-toolbar user="[[user]]"></dashboard-toolbar>
 
-                    <iron-icon class="click" on-tap="toggleMenu" icon="icons:menu" paper-drawer-toggle></iron-icon>
-
-                    <iron-icon on-tap="toggleMenu" icon="icons:search"></iron-icon>
-
-                    <paper-input id="search" label="search"></paper-input>
-
-                    <dashboard-logout></dashboard-logout>
-
-                </paper-toolbar>
-
-                <div class="bodycontainer">
-
-                    <h1>Welcome to the Dashboard</h1>
-
-                </div>
+                <dashboard-body user="[[user]]"></dashboard-body>
 
             </paper-header-panel>
 
@@ -38,9 +24,6 @@
 
     <style>
 
-        .click {
-            cursor: pointer;
-        }
         paper-drawer-panel {
             --paper-drawer-panel-main-container: {
                 background-color: #f6f7fa;
@@ -50,19 +33,6 @@
                   text-align: center;
                   color: #fff;
              };
-        }
-        .bodycontainer{
-            padding: 10px;
-        }
-        .topbar {
-            background-color: #ffffff;
-        }
-        iron-icon, paper-input{
-            display: inline-block;
-        }
-        .outbtn {
-            color: black;
-            float: right;
         }
 
     </style>
@@ -76,27 +46,12 @@
             properties: {
 
                 user: {
+
                     type: Object,
                     notify: true
                 }
 
             },
-
-            ready: function() {
-
-            },
-
-            logout: function(){
-
-                document.getElementById('login').logout();
-
-            },
-
-            toggleMenu: function(){
-
-                this.$.menu.togglePanel();
-
-            }
 
         });
 

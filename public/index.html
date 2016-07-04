@@ -14926,11 +14926,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <template>
 
-        <app-firebase id="firebase"></app-firebase>
+        <firebase-app auth-domain="compstackdev.firebaseapp.com" database-url="https://compstackdev.firebaseio.com" api-key="AIzaSyC5ic4kGYNGKq18bEiowo7d9uIkvla2xFE">
+        </firebase-app>
 
-        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}"></app-login>
+        <app-login id="login" signed-in="{{signedIn}}" hidden$="{{signedIn}}" user="{{user}}"></app-login>
 
-        <app-dashboard hidden$="{{!signedIn}}"></app-dashboard>
+        <app-dashboard hidden$="{{!signedIn}}" user="{{user}}"></app-dashboard>
 
     </template>
 
@@ -14948,49 +14949,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 signedIn: {
                     type: Boolean,
                     value: false,
-                }
-            }
-
-        });
-
-    </script>
-
-</dom-module>
-<dom-module id="app-firebase" assetpath="custom_components/">
-
-    <template>
-
-        <firebase-app auth-domain="compstackdev.firebaseapp.com" database-url="https://compstackdev.firebaseio.com" api-key="AIzaSyC5ic4kGYNGKq18bEiowo7d9uIkvla2xFE">
-        </firebase-app>
-
-    </template>
-
-    <style>
-
-    </style>
-
-    <script>
-
-        Polymer({
-
-            is: 'app-firebase',
-
-            properties: {
-
-                user: Object,
-                provider: String
-
+                },
+                user: Object
             },
 
-            ready: function() {
+            outputLogin: function()
+            {
 
-
-
-            },
-
-            addCompetency: function(){
-
-                this.$.collection_competencies.add({assesments : {}, course: "Test Compentency, No Courses", creator: "dev-tester", modified: Date(), modules: {}, title: "Test Competency" } )
+                console.log(this.signedIn)
 
             }
 
@@ -15115,8 +15081,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     .then(this.onLogin)
                     .catch(this.loginError);
 
-                this.signedIn = true;
-
             },
 
             googleLogin: function(){
@@ -15124,7 +15088,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 var provider = new firebase.auth.GoogleAuthProvider();
 
                 auth.signInWithPopup(provider)
-                    .then(this.onLogin)
+                    .then(this.onLogin.bind(this))
                     .catch(this.loginError);
 
             },
@@ -15134,26 +15098,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 var provider = new firebase.auth.GithubAuthProvider();
 
                 auth.signInWithPopup(provider)
-                    .then(this.onLogin)
+                    .then(this.onLogin.bind(this))
                     .catch(this.loginError);
 
             },
 
             onLogin: function(response) {
 
-                this.signedIn = auth.signedIn;
-
-
-            },
-
-            onLogout: function(response) {
-
-                this.signedIn = auth.signedIn;
 
             },
 
             loginError: function(error) {
 
+                console.log(error);
                 console.log('Login Error: ' + error.detail.message);
 
             },
@@ -15167,7 +15124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <template>
 
-        <firebase-auth id="auth" user="{{user}}" on-error="loginError"></firebase-auth>
+        <firebase-auth id="auth" user="{{user}}" on-error="loginError" signed-in="{{signedIn}}"></firebase-auth>
 
         <div class="topBar">
 
@@ -15189,7 +15146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         </div>
 
-        <login-loginform auth="{{auth}}" signed-in="{{signedIn}}" hidden$="{{hideLogin}}"></login-loginform>
+        <login-loginform auth="{{auth}}" signed-in="{{signedIn}}" hidden$="{{hideLogin}}" user="{{user}}"></login-loginform>
 
         <login-registerform auth="{{auth}}" hidden$="{{hideRegistration}}"></login-registerform>
 
@@ -15320,16 +15277,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             logout: function(){
 
                 auth.signOut()
-                    .then(this.onLogout)
+                    .then(this.onLogout.bind(this))
                     .catch(this.loginError);
-
-                this.signedIn = auth.signedIn;
 
             },
 
             onLogout: function(response) {
 
-                console.log('Logged Out')
 
             }
 
@@ -15416,7 +15370,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </script>
 
-
 </dom-module><dom-module id="app-dashboard" assetpath="custom_components/dashboard/">
 
     <template>
@@ -15431,23 +15384,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <paper-header-panel main="">
 
-                <paper-toolbar class="topbar">
+                <dashboard-toolbar user="[[user]]"></dashboard-toolbar>
 
-                    <iron-icon class="click" on-tap="toggleMenu" icon="icons:menu" paper-drawer-toggle=""></iron-icon>
-
-                    <iron-icon on-tap="toggleMenu" icon="icons:search"></iron-icon>
-
-                    <paper-input id="search" label="search"></paper-input>
-
-                    <paper-button horizontal="" end-justified="" layout="" class="outbtn" on-tap="logout">Logout</paper-button>
-
-                </paper-toolbar>
-
-                <div class="bodycontainer">
-
-                    <h1>Welcome to the Dashboard</h1>
-
-                </div>
+                <dashboard-body user="[[user]]"></dashboard-body>
 
             </paper-header-panel>
 
@@ -15457,9 +15396,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <style>
 
-        .click {
-            cursor: pointer;
-        }
         paper-drawer-panel {
             --paper-drawer-panel-main-container: {
                 background-color: #f6f7fa;
@@ -15469,19 +15405,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   text-align: center;
                   color: #fff;
              };
-        }
-        .bodycontainer{
-            padding: 10px;
-        }
-        .topbar {
-            background-color: #ffffff;
-        }
-        iron-icon, paper-input{
-            display: inline-block;
-        }
-        .outbtn {
-            color: black;
-            float: right;
         }
 
     </style>
@@ -15494,23 +15417,104 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             properties: {
 
+                user: {
+
+                    type: Object,
+                    notify: true
+                }
 
             },
 
-            ready: function() {
+        });
 
+    </script>
 
-            },
+</dom-module>
+<dom-module id="dashboard-toolbar" assetpath="custom_components/dashboard/">
+
+    <template>
+
+        <paper-toolbar>
+
+            <paper-icon-button icon="menu" paper-drawer-toggle=""></paper-icon-button>
+
+            <iron-icon icon="icons:search"></iron-icon>
+
+            <paper-input id="search" label="search"></paper-input>
+
+            <span class="title"></span>
+
+            <img class="userPic" src="{{user.photoURL}}">
+
+            <dashboard-logout></dashboard-logout>
+
+        </paper-toolbar>
+
+    </template>
+
+    <style>
+
+        paper-toolbar {
+            background-color: #fff;
+            display: block;
+            vertical-align: top;
+        }
+        .userPic {
+            height: 50px;
+            border-radius: 25px;
+        }
+        .click {
+            cursor: pointer;
+        }
+        iron-icon {
+            display: inline-block;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-toolbar',
+
+            properties: {
+
+                user: Object
+
+            }
+
+        });
+
+    </script>
+
+</dom-module><dom-module id="dashboard-logout" assetpath="custom_components/dashboard/">
+
+    <template>
+
+        <paper-button on-tap="logout">Logout</paper-button>
+
+    </template>
+
+    <style>
+
+        :host {
+            color: black;
+            background-color: white;
+            float: right;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-logout',
 
             logout: function(){
 
                 document.getElementById('login').logout();
-
-            },
-
-            toggleMenu: function(){
-
-                this.$.menu.togglePanel();
 
             }
 
@@ -15519,7 +15523,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </script>
 
 </dom-module>
-<!--
+<dom-module id="dashboard-body" assetpath="custom_components/dashboard/">
+
+    <template>
+
+        <div class="bodycontainer">
+
+            <h1>Welcome {{user.displayName}}</h1>
+
+        </div>
+
+    </template>
+
+    <style>
+
+        .bodycontainer {
+            padding: 5px;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-body',
+
+            properties: {
+
+                user: Object
+
+            }
+
+        })
+
+    </script>
+
+</dom-module><!--
 @license
 Copyright 2016 Google Inc. All Rights Reserved.
 Use of this source code is governed by a BSD-style
@@ -30010,8 +30050,224 @@ be used as the label of the toolbar via `aria-labelledby`.
     });
   </script>
 </dom-module>
-<!-- New Polymerfire element haven't been able to make it work yet-->
-<!--Polymer Catalog-->
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><script>
+
+  /**
+   * `Polymer.PaperInkyFocusBehavior` implements a ripple when the element has keyboard focus.
+   *
+   * @polymerBehavior Polymer.PaperInkyFocusBehavior
+   */
+  Polymer.PaperInkyFocusBehaviorImpl = {
+
+    observers: [
+      '_focusedChanged(receivedFocusFromKeyboard)'
+    ],
+
+    _focusedChanged: function(receivedFocusFromKeyboard) {
+      if (receivedFocusFromKeyboard) {
+        this.ensureRipple();
+      }
+      if (this.hasRipple()) {
+        this._ripple.holdDown = receivedFocusFromKeyboard;
+      }
+    },
+
+    _createRipple: function() {
+      var ripple = Polymer.PaperRippleBehavior._createRipple();
+      ripple.id = 'ink';
+      ripple.setAttribute('center', '');
+      ripple.classList.add('circle');
+      return ripple;
+    }
+
+  };
+
+  /** @polymerBehavior Polymer.PaperInkyFocusBehavior */
+  Polymer.PaperInkyFocusBehavior = [
+    Polymer.IronButtonState,
+    Polymer.IronControlState,
+    Polymer.PaperRippleBehavior,
+    Polymer.PaperInkyFocusBehaviorImpl
+  ];
+
+</script>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><!--
+Material design: [Icon toggles](https://www.google.com/design/spec/components/buttons.html#buttons-toggle-buttons)
+
+`paper-icon-button` is a button with an image placed at the center. When the user touches
+the button, a ripple effect emanates from the center of the button.
+
+`paper-icon-button` includes a default icon set.  Use `icon` to specify which icon
+from the icon set to use.
+
+    <paper-icon-button icon="menu"></paper-icon-button>
+
+See [`iron-iconset`](iron-iconset) for more information about
+how to use a custom icon set.
+
+Example:
+
+    <link href="path/to/iron-icons/iron-icons.html" rel="import">
+
+    <paper-icon-button icon="favorite"></paper-icon-button>
+    <paper-icon-button src="star.png"></paper-icon-button>
+
+To use `paper-icon-button` as a link, wrap it in an anchor tag. Since `paper-icon-button`
+will already receive focus, you may want to prevent the anchor tag from receiving focus
+as well by setting its tabindex to -1.
+
+    <a href="https://www.polymer-project.org" tabindex="-1">
+      <paper-icon-button icon="polymer"></paper-icon-button>
+    </a>
+
+### Styling
+
+Style the button with CSS as you would a normal DOM element. If you are using the icons
+provided by `iron-icons`, they will inherit the foreground color of the button.
+
+    /* make a red "favorite" button */
+    <paper-icon-button icon="favorite" style="color: red;"></paper-icon-button>
+
+By default, the ripple is the same color as the foreground at 25% opacity. You may
+customize the color using the `--paper-icon-button-ink-color` custom property.
+
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--paper-icon-button-disabled-text` | The color of the disabled button | `--disabled-text-color`
+`--paper-icon-button-ink-color` | Selected/focus ripple color | `--primary-text-color`
+`--paper-icon-button` | Mixin for a button | `{}`
+`--paper-icon-button-disabled` | Mixin for a disabled button | `{}`
+`--paper-icon-button-hover` | Mixin for button on hover | `{}`
+
+@group Paper Elements
+@element paper-icon-button
+@demo demo/index.html
+-->
+
+<dom-module id="paper-icon-button" assetpath="bower_components/paper-icon-button/">
+  <template strip-whitespace="">
+    <style>
+      :host {
+        display: inline-block;
+        position: relative;
+        padding: 8px;
+        outline: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        cursor: pointer;
+        z-index: 0;
+        line-height: 1;
+
+        width: 40px;
+        height: 40px;
+
+        /* NOTE: Both values are needed, since some phones require the value to be `transparent`. */
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-tap-highlight-color: transparent;
+
+        /* Because of polymer/2558, this style has lower specificity than * */
+        box-sizing: border-box !important;
+
+        @apply(--paper-icon-button);
+      }
+
+      :host #ink {
+        color: var(--paper-icon-button-ink-color, --primary-text-color);
+        opacity: 0.6;
+      }
+
+      :host([disabled]) {
+        color: var(--paper-icon-button-disabled-text, --disabled-text-color);
+        pointer-events: none;
+        cursor: auto;
+
+        @apply(--paper-icon-button-disabled);
+      }
+
+      :host(:hover) {
+        @apply(--paper-icon-button-hover);
+      }
+
+      iron-icon {
+        --iron-icon-width: 100%;
+        --iron-icon-height: 100%;
+      }
+    </style>
+
+    <iron-icon id="icon" src="[[src]]" icon="[[icon]]" alt$="[[alt]]"></iron-icon>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'paper-icon-button',
+
+      hostAttributes: {
+        role: 'button',
+        tabindex: '0'
+      },
+
+      behaviors: [
+        Polymer.PaperInkyFocusBehavior
+      ],
+
+      properties: {
+        /**
+         * The URL of an image for the icon. If the src property is specified,
+         * the icon property should not be.
+         */
+        src: {
+          type: String
+        },
+
+        /**
+         * Specifies the icon name or index in the set of icons available in
+         * the icon's icon set. If the icon property is specified,
+         * the src property should not be.
+         */
+        icon: {
+          type: String
+        },
+
+        /**
+         * Specifies the alternate text for the button, for accessibility.
+         */
+        alt: {
+          type: String,
+          observer: "_altChanged"
+        }
+      },
+
+      _altChanged: function(newValue, oldValue) {
+        var label = this.getAttribute('aria-label');
+
+        // Don't stomp over a user-set aria-label.
+        if (!label || oldValue == label) {
+          this.setAttribute('aria-label', newValue);
+        }
+      }
+    });
+  </script>
+</dom-module>
 </div>
 
     <app-main id="app"></app-main>

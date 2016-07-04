@@ -1,0 +1,37 @@
+<dom-module id="dashboard-body">
+
+    <template>
+
+        <div class="bodycontainer">
+
+            <h1>Welcome {{user.displayName}}</h1>
+
+        </div>
+
+    </template>
+
+    <style>
+
+        .bodycontainer {
+            padding: 5px;
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-body',
+
+            properties: {
+
+                user: Object
+
+            }
+
+        })
+
+    </script>
+
+</dom-module>
