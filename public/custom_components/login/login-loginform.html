@@ -4,11 +4,13 @@
 
         <h2>Welcome <span class="darken">Back!</span></h2>
 
+        <div class="loginError">[[errorMessage]]</div>
+
         <div class="input-container">
 
-            <iron-icon icon="social:person-outline"></iron-icon><paper-input id="email" label="Email"></paper-input><br/>
+            <iron-icon icon="social:person-outline"></iron-icon><paper-input value="{{email}}" id="email" label="Email"></paper-input><br/>
 
-            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input id="password" type="password" label="Password"></paper-input>
+            <iron-icon icon="icons:lock-outline"></iron-icon><paper-input value="{{password}}" id="password" type="password" label="Password"></paper-input>
 
         </div>
 
@@ -87,6 +89,10 @@
             height: 20px;
             vertical-align: middle;
         }
+        .loginError{
+            color: red;
+            text-align: center;
+        }
     </style>
 
     <script>
@@ -105,14 +111,37 @@
 
             },
 
+            validate: function(event){
+
+                var valid = true;
+                this.errorMessage = '';
+
+                if(this.email == ''){
+
+                    valid = false;
+                    this.errorMessage += 'Email is required. ';
+
+                }
+
+                if(this.password == ''){
+
+                    valid = false;
+                    this.errorMessage += 'Password is required. ';
+
+                }
+
+                return valid;
+
+            },
+
             login: function(){
 
-                var email = this.$.email.value;
-                var password = this.$.password.value;
+                if(this.validate()){
 
-                auth.signInWithEmailAndPassword(email, password)
-                    .then(this.onLogin)
-                    .catch(this.loginError);
+                    auth.signInWithEmailAndPassword(this.email, this.password)
+                        .then(this.onLogin.bind(this))
+                        .catch(this.loginError.bind(this));
+                }
 
             },
 
@@ -122,7 +151,7 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError);
+                    .catch(this.loginError.bind(this));
 
             },
 
@@ -132,7 +161,7 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError);
+                    .catch(this.loginError.bind(this));
 
             },
 
@@ -143,7 +172,7 @@
 
             loginError: function(error) {
 
-                console.log(error);
+                this.errorMessage += error.detail.message;
                 console.log('Login Error: ' + error.detail.message);
 
             },

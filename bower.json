@@ -40,6 +40,7 @@
     "paper-drawer-panel": "PolymerElements/paper-drawer-panel#^1.0.9",
     "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.6",
     "paper-header-panel": "PolymerElements/paper-header-panel#^1.1.6",
-    "paper-icon-button": "^1.1.2"
+    "paper-icon-button": "^1.1.2",
+    "iron-validatable-behavior": "PolymerElements/iron-validatable-behavior#^1.1.1"
   }
 }
