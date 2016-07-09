@@ -83,8 +83,6 @@
                 var valid = true;
                 this.errorMessage = '';
 
-                console.log('Email is ' + this.email);
-
                 //regular expression for email addresses
                 var re = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
 
@@ -134,8 +132,7 @@
 
                 this.$.inputContainer.style.display = 'none';
                 this.$.signUpButton.style.display = 'none';
-                this.$.successContainer.innerHTML = '<p>User created succesfully!<br/> Go back to the login form.</p>'
-
+                this.$.successContainer.innerHTML = '<p>User created succesfully!<br/> Go back to the login form.</p>';
 
             },
 
