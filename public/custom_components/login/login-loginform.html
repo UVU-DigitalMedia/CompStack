@@ -143,7 +143,7 @@
 
                     auth.signInWithEmailAndPassword(this.email, this.password)
                         .then(this.onLogin.bind(this))
-                        .catch(this.loginError.bind(this));
+
                 }
 
             },
@@ -154,7 +154,6 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError.bind(this));
 
             },
 
@@ -164,7 +163,6 @@
 
                 auth.signInWithPopup(provider)
                     .then(this.onLogin.bind(this))
-                    .catch(this.loginError.bind(this));
 
             },
 

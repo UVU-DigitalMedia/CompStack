@@ -1,0 +1,47 @@
+<dom-module id="firebase-users">
+
+    <template>
+
+        <firebase-query
+            id="query"
+            path="/users"
+            data="{{users}}">
+        </firebase-query>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'firebase-users',
+
+            properties: {
+
+                users: {
+
+                    type: Object,
+                    notify: true
+
+                }
+
+            },
+
+            ready: function() {
+
+                this.getUserByKey('/users/odVpUXMmJiMioVlhh9ConprhhsN2')
+                    .then(function(data){console.log(data)});
+
+            },
+
+             getUserByKey: function(userKey) {
+
+                 return this.$.query.getStoredValue(userKey);
+
+             }
+
+        });
+
+    </script>
+
+</dom-module>

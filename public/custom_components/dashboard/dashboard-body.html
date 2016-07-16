@@ -6,7 +6,15 @@
 
             <h1>Welcome {{user.displayName}}</h1>
 
-            <firebase-competencies></firebase-competencies>
+            <firebase-competencies competencies="{{competencies}}"></firebase-competencies>
+
+            <firebase-users users="{{users}}"></firebase-users>
+
+                <template is="dom-repeat" items="{{competencies}}" as="competency">
+
+                    <dashboard-competencycard competency="{{competency}}"></dashboard-competencycard>
+
+                </template>
 
         </div>
 
@@ -28,9 +36,17 @@
 
             properties: {
 
-                user: Object
+                user: Object,
+                competencies: Object,
+                users: Object
+
+            },
+
+            ready: function () {
+
 
             }
+
 
         })
 

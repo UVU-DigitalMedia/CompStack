@@ -1,0 +1,80 @@
+<dom-module id="dashboard-competencycard">
+
+    <template>
+
+
+        <firebase-users></firebase-users>
+
+        <paper-card heading="{{competency.$key}}">
+
+                <div class="card-content">
+
+                    <dl>
+                      <dt>Title</dt>
+                        <dd>{{competency.title}}</dd>
+                      <dt>Creator:</dt>
+                        <dd>{{creator.displayName}}</dd>
+                      <dt>Course:</dt>
+                        <dd>{{competency.course}}</dd>
+                    </dl>
+
+                </div>
+
+        </paper-card>
+
+    </template>
+
+    <style>
+
+        paper-card {
+
+            width: 300px;
+            margin: 10px;
+            vertical-align: top;
+
+        }
+
+        dt {
+
+            font-weight: bolder;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        dd {
+
+            margin-left: 15px;
+
+        }
+
+
+    </style>
+
+    <script>
+
+            Polymer({
+
+                is: 'dashboard-competencycard',
+
+                properties: {
+
+                    competency: Object,
+
+                    creator: Object,
+
+                },
+
+                ready: function()
+                {
+
+                    console.log(this.uid);
+                    console.log(this.creator)
+
+                }
+
+            });
+
+    </script>
+
+</dom-module>
