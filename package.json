@@ -18,7 +18,7 @@
     "polylint": "^2.10.1",
     "serve-favicon": "~2.3.0"
   },
-  "description": "This is where we build the competency definition, mapping, and storage web app.",
+  "description": "The competency definition, mapping, and storage web app.",
   "main": "app.js",
   "repository": {
     "type": "git",

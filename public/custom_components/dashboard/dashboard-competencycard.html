@@ -2,8 +2,10 @@
 
     <template>
 
-
-        <firebase-users></firebase-users>
+        <firebase-document
+            path="/users/[[competency.creator]]/displayName"
+            data="{{creator}}">
+        </firebase-document>
 
         <paper-card heading="{{competency.$key}}">
 
@@ -13,7 +15,7 @@
                       <dt>Title</dt>
                         <dd>{{competency.title}}</dd>
                       <dt>Creator:</dt>
-                        <dd>{{creator.displayName}}</dd>
+                        <dd>{{creator}}</dd>
                       <dt>Course:</dt>
                         <dd>{{competency.course}}</dd>
                     </dl>
@@ -62,14 +64,6 @@
                     competency: Object,
 
                     creator: Object,
-
-                },
-
-                ready: function()
-                {
-
-                    console.log(this.uid);
-                    console.log(this.creator)
 
                 }
 
