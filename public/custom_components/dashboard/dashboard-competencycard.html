@@ -7,17 +7,27 @@
             data="{{creator}}">
         </firebase-document>
 
-        <paper-card heading="{{competency.$key}}">
+        <paper-card class$="[[cardClass]]">
+
+                <div class="card-actions">
+
+                    <h2>{{competency.$key}}</h2>
+
+                    <iron-icon icon$="{{toggleIcon}}" on-tap="toggleOpen"></iron-icon>
+
+                </div>
 
                 <div class="card-content">
 
                     <dl>
                       <dt>Title</dt>
-                        <dd>{{competency.title}}</dd>
+                        <dd>{{competency.title}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
                       <dt>Creator:</dt>
-                        <dd>{{creator}}</dd>
+                        <dd>{{creator}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
                       <dt>Course:</dt>
-                        <dd>{{competency.course}}</dd>
+                        <dd>{{competency.course}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
+                      <dt>Last Modified:</dt>
+                      <dd>{{competency.modified}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
                     </dl>
 
                 </div>
@@ -30,9 +40,35 @@
 
         paper-card {
 
-            width: 300px;
-            margin: 10px;
             vertical-align: top;
+            margin: 10px;
+
+        }
+
+        .mini {
+
+            width: 300px;
+
+        }
+
+        .large {
+
+            width: 100%;
+
+        }
+
+        iron-icon {
+
+            float: right;
+            cursor: pointer;
+        }
+
+        h2 {
+
+            width: 50%;
+            height: 30px;
+            overflow: hidden;
+            display: inline-block;
 
         }
 
@@ -65,6 +101,48 @@
 
                     creator: Object,
 
+                    cardClass: {
+
+                        type: String,
+
+                        value: 'mini'
+
+                    },
+
+                    toggleIcon: {
+
+                        type: String,
+
+                        value: 'icons:open-in-new'
+
+                    },
+
+                    hideEdit: {
+
+                        type: Boolean,
+
+                        value: true
+
+                    }
+
+                },
+
+                toggleOpen: function() {
+
+                    if(this.cardClass == 'mini'){
+
+                        this.toggleIcon = 'icons:close';
+                        this.cardClass = 'large';
+                        this.hideEdit = false;
+
+                    }
+                    else {
+
+                        this.toggleIcon = 'icons:open-in-new';
+                        this.cardClass = 'mini';
+                        this.hideEdit = true;
+
+                    }
                 }
 
             });
