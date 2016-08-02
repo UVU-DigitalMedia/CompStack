@@ -2,6 +2,12 @@
 
     <template>
 
+        <firebase-document id="compdoc"
+            app="compdoc"
+            path="/users/github:3533468/displayName"
+            data="{{competency}}">
+        </firebase-document>
+
         <firebase-document
             path="/users/[[competency.creator]]/displayName"
             data="{{creator}}">
@@ -20,14 +26,14 @@
                 <div class="card-content">
 
                     <dl>
-                      <dt>Title</dt>
-                        <dd>{{competency.title}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
+                      <dt>Description</dt>
+                        <dd id="description" contenteditable="true" on-blur="save">{{competency.title}}</dd>
                       <dt>Creator:</dt>
-                        <dd>{{creator}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
+                        <dd id="creator">{{creator}}</dd>
                       <dt>Course:</dt>
-                        <dd>{{competency.course}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
+                        <dd id="course" contenteditable="true" on-blur="save">{{competency.course}}</dd>
                       <dt>Last Modified:</dt>
-                      <dd>{{competency.modified}} <iron-icon icon="icons:create" on-tap="edit" hidden$="{{hideEdit}}"></iron-icon></dd>
+                        <dd on-blur="save">{{competency.modified}}</dd>
                     </dl>
 
                 </div>
@@ -97,7 +103,14 @@
 
                 properties: {
 
-                    competency: Object,
+                    key: String,
+
+                    competency: {
+
+                        type: Object,
+                        notify: true,
+
+                    },
 
                     creator: Object,
 
@@ -127,6 +140,7 @@
 
                 },
 
+
                 toggleOpen: function() {
 
                     if(this.cardClass == 'mini'){
@@ -143,6 +157,25 @@
                         this.hideEdit = true;
 
                     }
+                },
+
+                ready: function() {
+
+                    console.log('https://compstackdev.firebaseio.com' + this.$.compdoc.path);
+                    console.log(this.competency)
+
+                },
+
+                save: function() {
+
+                    this.competency.creator = this.$.creator.textContent;
+                    this.competency.course = this.$.course.textContent;
+                    this.competency.title = this.$.course.textContent;
+
+                    this.$.compdoc.save()
+                        .then(function(data){ console.log('Saved') })
+                        .catch(function(data){ console.log('Not Saved') });
+
                 }
 
             });

@@ -6,11 +6,11 @@
 
             <h1>Welcome {{user.displayName}}</h1>
 
-            <firebase-competencies competencies="{{competencies}}"></firebase-competencies>
+            <firebase-competencies id="comps" competencies="{{competencies}}"></firebase-competencies>
 
                 <template is="dom-repeat" items="{{competencies}}" as="competency">
 
-                    <dashboard-competencycard competency="{{competency}}"></dashboard-competencycard>
+                    <dashboard-competencycard key="{{competency.$key}}"></dashboard-competencycard>
 
                 </template>
 

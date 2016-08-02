@@ -20,9 +20,17 @@
 
                 competencies: {
                     type: Object,
-                    notify: true
+                    notify: true,
                 }
             },
+
+            save: function(){
+
+                this.$.query.save()
+                    .then(function(data){ console.log('Saved') })
+                    .catch(function(data){ console.log('Not Saved') });
+
+            }
 
         });
 
