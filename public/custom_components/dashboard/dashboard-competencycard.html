@@ -159,19 +159,11 @@
                     }
                 },
 
-                ready: function() {
-
-                    console.log('https://compstackdev.firebaseio.com' + this.$.compdoc.path);
-                    console.log(this.competency)
-                    console.log(this.$.compdoc)
-
-                },
-
                 save: function() {
 
-                    this.competency.creator = this.$.creator.textContent;
                     this.competency.course = this.$.course.textContent;
                     this.competency.title = this.$.description.textContent;
+                    this.competency.modified = new Date().toString();
                     console.log(this.competency)
 
                     this.$.compdoc.save('/competencies', this.key)
