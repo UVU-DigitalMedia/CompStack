@@ -2,9 +2,9 @@
 
     <template>
 
-        <firebase-document id="compdoc"
-            app="compdoc"
-            path="/users/github:3533468/displayName"
+        <firebase-document
+            id="compdoc"
+            path="/competencies/[[key]]"
             data="{{competency}}">
         </firebase-document>
 
@@ -163,6 +163,7 @@
 
                     console.log('https://compstackdev.firebaseio.com' + this.$.compdoc.path);
                     console.log(this.competency)
+                    console.log(this.$.compdoc)
 
                 },
 
@@ -170,9 +171,10 @@
 
                     this.competency.creator = this.$.creator.textContent;
                     this.competency.course = this.$.course.textContent;
-                    this.competency.title = this.$.course.textContent;
+                    this.competency.title = this.$.description.textContent;
+                    console.log(this.competency)
 
-                    this.$.compdoc.save()
+                    this.$.compdoc.save('/competencies', this.key)
                         .then(function(data){ console.log('Saved') })
                         .catch(function(data){ console.log('Not Saved') });
 

@@ -1,7 +1,7 @@
 # CompStack
 This is where we build the competency definition, mapping, and storage web app.
 
-# Requirments
+# Requirements
 
 * node / npm
 * bower
