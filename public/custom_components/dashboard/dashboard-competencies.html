@@ -1,0 +1,39 @@
+<dom-module id="dashboard-competencies">
+
+    <template>
+
+        <firebase-query
+            id="query"
+            path="/competencies"
+            data="{{competencies}}">
+        </firebase-query>
+
+        <template is="dom-repeat" items="{{competencies}}" as="competency">
+
+            <dashboard-competencycard competency="{{competency}}"></dashboard-competencycard>
+
+        </template>
+
+    </template>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-competencies',
+
+            properties: {
+
+                competencies: Object
+
+            },
+
+            ready: function () {
+
+
+            }
+        })
+
+    </script>
+
+</dom-module>
