@@ -5,11 +5,13 @@
         <firebase-query
             id="courses"
             path="[[path]]"
+            transactionsComplete="buildDataSet"
             data="{{courses}}">
         </firebase-query>
 
-        <paper-input id='input' on-focus="look" on-keyup="predict" on-blur="hide"></paper-input>
-        <div id="predictions"></div>
+            <paper-input id='input' on-focus="showPredictions" on-keyup="predict" value={{value}}></paper-input>
+
+            <div id="predictions" hidden$={{hide}}></div>
 
     </template>
 
@@ -21,6 +23,7 @@
             font-weight: bold;
             color: gray;
             cursor: pointer;
+            margin: 1em;
 
         }
 
@@ -36,20 +39,27 @@
 
                 path: String,
 
-                matchArray: Array,
+                value: String,
+
+                matchArray: {
+
+                    type: Array,
+
+                    value: []
+                },
 
                 courses: {
 
                     type: Object,
 
                     observer: 'buildDataSet'
+                },
+
+                hide: {
+
+                    type: Boolean,
+                    value: false
                 }
-
-            },
-
-            ready: function() {
-
-                this.matchArray = [];
 
             },
 
@@ -62,19 +72,18 @@
 
                 }
 
-                console.log('Match Array is: ');
-                console.log(this.matchArray);
-
             },
 
-            look: function() {
+            showPredictions: function() {
 
                 this.buildDataSet();
+                this.hide = false;
 
             },
 
-            hide: function() {
+            hidePredictions: function() {
 
+                this.hide = true;
 
             },
 
@@ -83,23 +92,29 @@
                 var matchCount = 0;
                 var matchLimit = 4;
 
-//                while (this.$.predictions.firstChild) {
-//
-//                    this.$.predictions.removeChild(this.$.predictions.firstChild);
-//
-//                }
-//
-                var predictions = [];
+                while(this.$.predictions.firstChild) {
+
+                    this.$.predictions.removeChild(this.$.predictions.firstChild);
+
+                }
 
                 for(course in this.matchArray)
                 {
 
-                    var length = this.$.input.value.length
-                    console.log('looking for ' + this.$.input.value)
+                    var length = this.value.length
 
-                    if(this.matchArray[course].course.slice(0,length) == this.$.input.value){
+                    if(this.matchArray[course].course.slice(0,length) == this.value){
 
-                        predictions.push(this.matchArray[course].course);
+                        var span = document.createElement('span');
+
+                        span.className = 'prediction';
+
+                        span.addEventListener('tap', this.fill.bind(this));
+
+                        span.textContent = this.matchArray[course].course;
+
+                        Polymer.dom(this.$.predictions).appendChild(span);
+
                         matchCount++;
 
                         if(matchCount >= matchLimit)
@@ -114,33 +129,14 @@
 
                 }
 
-                var predictionNodes = [];
-
-                for(prediction in predictions)
-                {
-
-                    var span = document.createElement('span');
-
-                    span.className = 'prediction';
-                    span.addEventListener('tap', this.fill.bind(this));
-                    span.textContent = predictions[prediction];
-
-                }
-
-
-                for(node in predictionNodes)
-                {
-
-                    Polymer.dom(this.$.predictions).appendChild(predictionNodes[node]);
-
-                }
-
             },
 
 
             fill: function(event) {
 
-                this.$.input.value = event.targetElement.textContent;
+                this.value = event.srcElement.textContent;
+
+                this.hide = true;
 
             }
 

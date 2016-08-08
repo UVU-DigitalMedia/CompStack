@@ -31,7 +31,7 @@
                       <dt>Creator:</dt>
                         <dd id="creator">{{savedComp.creator}}</dd>
                       <dt>Course:</dt>
-                        <dd id="course" contenteditable="true" on-blur="save">{{savedComp.course}}</dd>
+                        <dashboard-typeaheadinput id="course" path="/courses" value="{{savedComp.course}}" on-blur="save"></dashboard-typeaheadinput>
                       <dt>Last Modified:</dt>
                         <dd on-blur="save">{{savedComp.modified}}</dd>
                     </dl>
@@ -167,7 +167,7 @@
 
                 save: function() {
 
-                    this.savedComp.course = this.$.course.textContent;
+                    this.savedComp.course = this.$.course.value;
                     this.savedComp.title = this.$.description.textContent;
                     this.savedComp.modified = new Date().toString();
 
