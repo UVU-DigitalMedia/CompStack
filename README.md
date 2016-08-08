@@ -16,6 +16,13 @@ This is where we build the competency definition, mapping, and storage web app.
     `cd CompStack`
 4. Run `npm install`
 5. Run `bower install`
-6. Run `npm start`
+6. Run `npm start` and reload will load the app in your default browser
+
+Any changes made to the public folder will cause the browser to reload automatically.
 
 The app will run on port 3000 so you can access it from localhost:3000
+
+# Dev Tools
+
+`npm run spock` vulcanizes the project
+`npm run checkapp` runs polylint on the project

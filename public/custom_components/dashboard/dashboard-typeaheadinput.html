@@ -1,0 +1,151 @@
+<dom-module id="dashboard-typeaheadinput">
+
+    <template>
+
+        <firebase-query
+            id="courses"
+            path="[[path]]"
+            data="{{courses}}">
+        </firebase-query>
+
+        <paper-input id='input' on-focus="look" on-keyup="predict" on-blur="hide"></paper-input>
+        <div id="predictions"></div>
+
+    </template>
+
+    <style>
+
+        .prediction{
+
+            text-decoration: underline;
+            font-weight: bold;
+            color: gray;
+            cursor: pointer;
+
+        }
+
+    </style>
+
+    <script>
+
+        Polymer({
+
+            is: 'dashboard-typeaheadinput',
+
+            properties: {
+
+                path: String,
+
+                matchArray: Array,
+
+                courses: {
+
+                    type: Object,
+
+                    observer: 'buildDataSet'
+                }
+
+            },
+
+            ready: function() {
+
+                this.matchArray = [];
+
+            },
+
+            buildDataSet: function() {
+
+                for(course in this.courses)
+                {
+
+                    this.matchArray.push({course: this.courses[course].prefix + ' ' + this.courses[course].number, key: this.courses[course].$key})
+
+                }
+
+                console.log('Match Array is: ');
+                console.log(this.matchArray);
+
+            },
+
+            look: function() {
+
+                this.buildDataSet();
+
+            },
+
+            hide: function() {
+
+
+            },
+
+            predict: function() {
+
+                var matchCount = 0;
+                var matchLimit = 4;
+
+//                while (this.$.predictions.firstChild) {
+//
+//                    this.$.predictions.removeChild(this.$.predictions.firstChild);
+//
+//                }
+//
+                var predictions = [];
+
+                for(course in this.matchArray)
+                {
+
+                    var length = this.$.input.value.length
+                    console.log('looking for ' + this.$.input.value)
+
+                    if(this.matchArray[course].course.slice(0,length) == this.$.input.value){
+
+                        predictions.push(this.matchArray[course].course);
+                        matchCount++;
+
+                        if(matchCount >= matchLimit)
+                        {
+
+                            matchCount = 0;
+                            break;
+
+                        }
+
+                    }
+
+                }
+
+                var predictionNodes = [];
+
+                for(prediction in predictions)
+                {
+
+                    var span = document.createElement('span');
+
+                    span.className = 'prediction';
+                    span.addEventListener('tap', this.fill.bind(this));
+                    span.textContent = predictions[prediction];
+
+                }
+
+
+                for(node in predictionNodes)
+                {
+
+                    Polymer.dom(this.$.predictions).appendChild(predictionNodes[node]);
+
+                }
+
+            },
+
+
+            fill: function(event) {
+
+                this.$.input.value = event.targetElement.textContent;
+
+            }
+
+        })
+
+    </script>
+
+</dom-module>

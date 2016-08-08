@@ -167,23 +167,13 @@
 
                 save: function() {
 
-                    //this.savedComp = this.competency
-
                     this.savedComp.course = this.$.course.textContent;
                     this.savedComp.title = this.$.description.textContent;
                     this.savedComp.modified = new Date().toString();
 
-                    console.log(this.key)
-                    console.log(this.competency)
-                    console.log(this.savedComp)
-
                     this.$.savedComp.save('/competencies', this.key)
                         .then(function(data){ console.log('Saved') })
                         .catch(function(data){ console.log('Not Saved ' + data) });
-
-//                    this.$.comp.save(this.competency.$key)
-//                        .then(function(data){ console.log('Saved') })
-//                        .catch(function(data){ console.log('Not Saved ' + data) });
 
                 }
 
