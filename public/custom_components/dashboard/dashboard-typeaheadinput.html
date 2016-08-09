@@ -9,7 +9,7 @@
             data="{{courses}}">
         </firebase-query>
 
-            <paper-input id='input' on-focus="showPredictions" on-keyup="predict" value={{value}}></paper-input>
+            <paper-input id='input' on-focus="showPredictions" on-keyup="predict" value={{value}} on-blur="save"></paper-input>
 
             <div id="predictions" hidden$={{hide}}></div>
 
@@ -131,12 +131,17 @@
 
             },
 
-
             fill: function(event) {
 
                 this.value = event.srcElement.textContent;
 
                 this.hide = true;
+
+            },
+
+            save: function() {
+
+                this.domHost.save();
 
             }
 
