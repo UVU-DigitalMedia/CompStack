@@ -8,7 +8,7 @@
             data="{{courses}}">
         </firebase-query>
 
-            <paper-input id='input' on-focus="showPredictions" on-keyup="predict" value={{value}} on-blur="save"></paper-input>
+            <paper-input id='input' on-focus="showPredictions" on-keyup="predict" value={{value}}></paper-input>
 
             <div id="predictions" hidden$={{hide}}></div>
 
@@ -16,13 +16,18 @@
 
     <style>
 
-        .prediction{
+        .prediction {
 
             text-decoration: underline;
             font-weight: bold;
-            color: gray;
             cursor: pointer;
             margin: 1em;
+
+        }
+
+        #predictions {
+
+            background-color: lightgray;
 
         }
 
@@ -134,7 +139,9 @@
 
                 this.value = event.srcElement.textContent;
 
-                this.hide = true;
+                this.hidePredictions();
+
+                this.save();
 
             },
 
